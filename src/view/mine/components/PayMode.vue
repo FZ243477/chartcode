@@ -1,9 +1,11 @@
 <template>
-  <div class="pay-wrapper">
+  <div class="order_btn" style="width: 90%;">
+  <div class="pay-wrapper" style="text-align: center">
     <div class="pay-wrapper-mode">
-      <span>支付方式</span>
+      <span class="pay_span">支付方式</span>
     </div>
     <ul class="pay-wrapper-list">
+      <div  class="solid_border" style="width: 100%; margin-left: 0px; padding-bottom: 0px;"></div>
       <li class="pay-wrapper-list-items" @click="payType=1" v-if="!isWeixin">
         <div class="pay-wrapper-list-items-left">
           <img class="payment-icon" src="@/assets/img/membership/zfb.png" />
@@ -21,6 +23,8 @@
         <img class="payment-select" v-show="payType==2" src="@/assets/img/mine/selected.png" />
       </li>
     </ul>
+  </div>
+    <div class="pay-btn">立即支付9.9元</div>
   </div>
 </template>
 
@@ -55,10 +59,8 @@ export default {
 <style lang='scss' scoped>
 @import "../../../assets/style/global.scss";
 .pay-wrapper {
-  padding: 0.266667rem;
   border-radius: 0.266667rem;
-  background-color: rgba(255, 255, 255, 0.8);
-  margin-top: 0.133333rem;
+  background-color: hsla(0,0%,100%,.8);
   font-family: PingFang-SC-Regular;
   &-mode {
     font-size: 0.346667rem;

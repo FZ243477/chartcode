@@ -1,6 +1,10 @@
 <template>
     <div class="mine">
-        <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <Header></Header>
+      <div style="background-color: rgb(245, 245, 245);">
+
+      </div>
+        <van-pull-refresh v-model="isLoading" @refresh="onRefresh" style="background-color: rgb(245, 245, 245);">
             <template #loosing>
                 <div style="color:#fff;">释放即可刷新</div>
             </template>
@@ -10,106 +14,139 @@
                 </div>
             </template>
             <div class="content">
-                <div class="head">
-                    <div class="set-wrapper">
-                        <span class="iconfont set-btn" @click="goSetting">&#xe61d;</span>
-                    </div>
-                    <div class="user-wrapper" v-if='userinfo.is_elme !== 1'>
-                        <div class="user-wrapper-box">
-                            <img class="avatar-img" v-lazy="userinfo.avatar" />
-                            <div class="user-info">
-                                <div>{{userinfo.nickname}}</div>
-                            </div>
-                        </div>
-                        <span class="iconfont" @click="goResetPerson">&#xe65e;</span>
-                    </div>
-                </div>
+              <div class="mine_title">
+                <p class="title_down_p_l">下载记录</p>
+                <p class="title_down_p_r">清空记录</p>
+                <div style="clear: both;"></div>
+              </div>
+<!--                <div class="head">-->
+<!--                    <div class="set-wrapper">-->
+<!--                        <span class="iconfont set-btn" @click="goSetting">&#xe61d;</span>-->
+<!--                    </div>-->
+<!--                    <div class="user-wrapper" v-if='userinfo.is_elme !== 1'>-->
+<!--                        <div class="user-wrapper-box">-->
+<!--                            <img class="avatar-img" v-lazy="userinfo.avatar" />-->
+<!--                            <div class="user-info">-->
+<!--                                <div>{{userinfo.nickname}}</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <span class="iconfont" @click="goResetPerson">&#xe65e;</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+
                 <div class="download-wrapper">
-                    <div class="num-wrapper">
-                        <span>
-                            下载
-                            <b>{{userinfo.download_num}}张</b>
-                        </span>
-                        <span>
-                            剩余下载次数
-                            <b>{{userinfo.free_download_num}}张</b>
-                        </span>
-                    </div>
-                    <van-tabs v-model="active" v-if="userinfo.is_elme!=1">
-                        <van-tab>
-                            <template #title>
-                                <span class="iconfont" style="color:#1989fa;">&#xe60d;</span>
-                                <span style="color:#1989fa;">我的下载</span>
-                            </template>
-                            <div class="my-download">
-                                <van-grid :column-num="2" v-if="buyData.length>0">
-                                    <img
-                                        v-lazy="item.url"
-                                        class="img-items"
-                                        v-for="item in buyData"
-                                        :key="item.id"
-                                        @click="goDetail(item)"
-                                    />
-                                </van-grid>
-                                <van-empty image="search" v-else>
-                                    <div style="color:#fff;" slot="description">暂无数据</div>
-                                </van-empty>
-                            </div>
-                        </van-tab>
-                        <van-tab>
-                            <template #title>
-                                <span class="iconfont" style="color:#1989fa;">&#xe7b7;</span>
-                                <span style="color:#1989fa;">下载卡</span>
-                            </template>
-                            <div class="vip-wrapper" :style='backStyle'>
-                                <div class="vip-wrapper-buy">
-                                    <span class="buy-title">购买下载卡</span>
-                                    <span class="buy-tips">开通后有效期为365天</span>
-                                </div>
-                                <ul class="vip-wrapper-list">
-                                    <li
-                                        v-for="item in vipRsp.list"
-                                        :key="item.id"
-                                        :class="{selected:vipType==item.id}"
-                                        @click="vipType=item.id"
-                                        class="vip-wrapper-list-items"
-                                    >
-                                        <span>{{item.num}}张</span>
-                                        <div>￥{{item.price}}</div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <pay-mode :syncType.sync="payType"></pay-mode>
-                            <div class="pay-btn" @click="payNow" v-show="vipType">立即支付</div>
-                        </van-tab>
-                    </van-tabs>
-                    <div v-else>
-                        <div style="width:50%; display:flex; align-items:center; justify-content:center; margin-top:.266667rem; margin-bottom:.4rem;">
-                            <span class="iconfont" style="color:#1989fa; margin-right:.133333rem;">&#xe60d;</span>
-                            <span style="color:#1989fa;">我的下载</span>
+<!--                    <div class="num-wrapper">-->
+<!--                        <span>-->
+<!--                            下载-->
+<!--                            <b>{{userinfo.download_num}}张</b>-->
+<!--                        </span>-->
+<!--                        <span>-->
+<!--                            剩余下载次数-->
+<!--                            <b>{{userinfo.free_download_num}}张</b>-->
+<!--                        </span>-->
+<!--                    </div>-->
+                  <div class="my-download">
+                    <van-grid :column-num="2" v-if="buyData.length>0">
+                      <div  class="down_box"  v-for="item in buyData"
+                            :key="item.id"
+                            @click="goDetail(item)">
+                        <img  class="img-items"   v-lazy="item.url" lazy="loaded" />
+                        <div class="down_box_right">
+                          <p >图片ID：159253631610560</p>
+                          <p >名称：中式快餐套餐饭图片鸡翅套餐</p>
+                          <p >分类：快餐,简餐便当,米饭</p>
+                          <p >下载时间：12-04 15:24:48</p>
                         </div>
-                        <div class="my-download ele-download">
-                            <van-grid :column-num="2" v-if="buyData.length>0">
-                                <img
-                                    v-lazy="item.url"
-                                    class="img-items"
-                                    v-for="item in buyData"
-                                    :key="item.id"
-                                    @click="goDetail(item)"
-                                />
-                            </van-grid>
-                            <van-empty image="search" v-else>
-                                <div style="color:#fff;" slot="description">暂无数据</div>
-                            </van-empty>
-                        </div>
-                    </div>
+                      </div>
+<!--                      <img-->
+<!--                        v-lazy="item.url"-->
+<!--                        class="img-items"-->
+<!--                        v-for="item in buyData"-->
+<!--                        :key="item.id"-->
+<!--                        @click="goDetail(item)"-->
+<!--                      />-->
+                    </van-grid>
+                    <van-empty image="search" v-else>
+                      <div style="color:#fff;" slot="description">暂无数据</div>
+                    </van-empty>
+                  </div>
+<!--                    <van-tabs v-model="active" v-if="userinfo.is_elme!=1">-->
+<!--                        <van-tab>-->
+<!--                            <template #title>-->
+<!--                                <span class="iconfont" style="color:#1989fa;">&#xe60d;</span>-->
+<!--                                <span style="color:#1989fa;">我的下载</span>-->
+<!--                            </template>-->
+<!--                            <div class="my-download">-->
+<!--                                <van-grid :column-num="2" v-if="buyData.length>0">-->
+<!--                                    <img-->
+<!--                                        v-lazy="item.url"-->
+<!--                                        class="img-items"-->
+<!--                                        v-for="item in buyData"-->
+<!--                                        :key="item.id"-->
+<!--                                        @click="goDetail(item)"-->
+<!--                                    />-->
+<!--                                </van-grid>-->
+<!--                                <van-empty image="search" v-else>-->
+<!--                                    <div style="color:#fff;" slot="description">暂无数据</div>-->
+<!--                                </van-empty>-->
+<!--                            </div>-->
+<!--                        </van-tab>-->
+<!--                        <van-tab>-->
+<!--                            <template #title>-->
+<!--                                <span class="iconfont" style="color:#1989fa;">&#xe7b7;</span>-->
+<!--                                <span style="color:#1989fa;">下载卡</span>-->
+<!--                            </template>-->
+<!--                            <div class="vip-wrapper" :style='backStyle'>-->
+<!--                                <div class="vip-wrapper-buy">-->
+<!--                                    <span class="buy-title">购买下载卡</span>-->
+<!--                                    <span class="buy-tips">开通后有效期为365天</span>-->
+<!--                                </div>-->
+<!--                                <ul class="vip-wrapper-list">-->
+<!--                                    <li-->
+<!--                                        v-for="item in vipRsp.list"-->
+<!--                                        :key="item.id"-->
+<!--                                        :class="{selected:vipType==item.id}"-->
+<!--                                        @click="vipType=item.id"-->
+<!--                                        class="vip-wrapper-list-items"-->
+<!--                                    >-->
+<!--                                        <span>{{item.num}}张</span>-->
+<!--                                        <div>￥{{item.price}}</div>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                            <pay-mode :syncType.sync="payType"></pay-mode>-->
+<!--                            <div class="pay-btn" @click="payNow" v-show="vipType">立即支付</div>-->
+<!--                        </van-tab>-->
+<!--                    </van-tabs>-->
+<!--                    <div v-else>-->
+<!--                        <div style="width:50%; display:flex; align-items:center; justify-content:center; margin-top:.266667rem; margin-bottom:.4rem;">-->
+<!--                            <span class="iconfont" style="color:#1989fa; margin-right:.133333rem;">&#xe60d;</span>-->
+<!--                            <span style="color:#1989fa;">我的下载</span>-->
+<!--                        </div>-->
+<!--                        <div class="my-download ele-download">-->
+<!--                            <van-grid :column-num="2" v-if="buyData.length>0">-->
+<!--                                <img-->
+<!--                                    v-lazy="item.url"-->
+<!--                                    class="img-items"-->
+<!--                                    v-for="item in buyData"-->
+<!--                                    :key="item.id"-->
+<!--                                    @click="goDetail(item)"-->
+<!--                                />-->
+<!--                            </van-grid>-->
+<!--                            <van-empty image="search" v-else>-->
+<!--                                <div style="color:#fff;" slot="description">暂无数据</div>-->
+<!--                            </van-empty>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
+
         </van-pull-refresh>
     </div>
 </template>
 
 <script>
+import Header from '@/components/Header.vue'
 import store from "store";
 import {
     seeMyBought,
@@ -123,7 +160,8 @@ import PayMode from "./components/PayMode";
 export default {
     components: {
         Empty,
-        PayMode
+        PayMode,
+       Header
     },
     data() {
         const tabs = [
@@ -317,16 +355,20 @@ export default {
     background-color: $backgColor;
 }
 
-.img-items {
-    width: 4.533333rem;
-    max-height: 6.666667rem;
-    margin-bottom: 0.133333rem;
-    break-inside: avoid;
-    margin-left: 0.133333rem;
-    object-fit: cover;
+.img-items{
+  width: 3.4rem;
+  max-height: 2.6rem;
+  margin-bottom: .133333rem;
+  break-inside: avoid;
+  -o-object-fit: cover;
+  object-fit: cover;
+  margin-left: .5rem;
+  margin-top: .5rem;
+  float: left;
+  padding-right: .1rem;
 }
 .img-items:nth-child(odd) {
-    margin-left: 0;
+
 }
 .mine {
     width: 100vw;
@@ -402,7 +444,7 @@ export default {
                 }
             }
             .my-download {
-                height: 9.333333rem;
+                height: auto;
                 overflow-y: scroll;
                 margin-top: 0.266667rem;
                 color:$backgColor;

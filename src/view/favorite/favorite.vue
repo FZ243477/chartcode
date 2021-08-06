@@ -9,11 +9,12 @@
         <div style="clear: both;"></div>
       </div>
         <van-nav-bar title="收藏夹" :right-text="isEdit ? '完成' : '管理'" @click-right="finishEdit" style="width:100%; position:fixed; top:0;"/>
-        <van-checkbox-group v-model="result" ref="checkboxGroup" style="padding-top:46px;">
-            <van-grid :column-num="2" v-if="collectData.length>0">
-                <van-grid-item v-for="(item,index) in collectData" :key="index" @click="navToActivity(item)">
+        <van-checkbox-group v-model="result" ref="checkboxGroup" style="width: 90%;margin-left: 5%;">
+            <van-grid :column-num="2" v-if="collectData.length>0" style="column-count: 2;column-gap: 10px;margin-top: 0.3rem;">
+                <van-grid-item v-for="(item,index) in collectData" :key="index" @click="navToActivity(item)"
+                               style="flex-basis: 50%;break-inside: avoid;margin-bottom: 0.25rem;height: auto;">
                     <div style="position:relative;">
-                        <img v-lazy="item.url" style="width:149px; height:99px; object-fit:cover;" />
+                        <img v-lazy="item.url" style="width: 100%;height: auto;border-radius: 5px;" />
                         <div v-show="isEdit" style="width:100%; position:absolute; bottom:3px; background-color:rgba(0,0,0,0.4); padding:5px 10px; box-sizing: border-box; display:flex; justify-content:space-between;" @click.stop="stopBubble">
                             <van-checkbox :name="item.id" ref="checkboxes" slot="right-icon" icon-size="15px" checked-color="#1989fa"/>
                             <img src="@/assets/img/favorite/delete.png" @click="deleteImg(item,index)" style="height:16px;">
@@ -62,7 +63,6 @@
                 showMustload: true,
                 isEdit: false,
                 result:[],
-
                 collectData:[],
                 checked:false,
                 checkAllList:[]

@@ -2,8 +2,8 @@
     <div class="register"  :style='backStyle' ref="homePage">
       <div class="back_box" ref="homePage2">
         <div class="input-box">
-          <input type="text" placeholder="请输入手机号" />
-          <input type="password" placeholder="请输入密码" />
+          <input type="text" v-model="account" placeholder="请输入手机号" />
+          <input type="password" v-model="password" placeholder="请输入密码" />
         </div>
         <div class="control-box">
           <a href="/forgetPwd" class="btns">忘记密码?</a>
@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="title">登录</div>
-      <div class="login-btn">登录</div>
+      <div class="login-btn" @click="login">登录</div>
       <img src="@/assets/img/home/logo.2e38c60.png" class="logo_fixed">
 <!--        <div class="title">登录</div>-->
 <!--        <div class="input-box">-->

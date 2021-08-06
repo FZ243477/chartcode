@@ -138,6 +138,14 @@ export default new Router({
             path: '/serviceAgreement',
             component: resolve => require(['@/view/reset/serviceAgreement'], resolve),  //服务协议
             meta: { title: '服务协议' }
-        }
+        },
+      {
+        path: '/downCard',
+        component: resolve => require(['@/view/mine/downCard'], resolve)  //图片详情
+      },
+      {
+        path: '/userDetail',
+        component: resolve => require(['@/view/mine/userDetail'], resolve)  //图片详情
+      },
     ]
 })
