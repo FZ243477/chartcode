@@ -6,6 +6,9 @@ import Navigation from 'vue-navigation'
 import store from "store"
 import axios from "axios"
 import Cookie from 'vux/src/tools/cookie'
+import { Area, Popup } from 'vant'
+Vue.use(Area)
+Vue.use(Popup)
 
 import { ToastPlugin } from 'vux';
 import { LoadingPlugin } from 'vux';

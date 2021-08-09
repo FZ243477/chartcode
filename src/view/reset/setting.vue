@@ -87,6 +87,19 @@
         </div>
       </div>
 
+      <div onclick="event.cancelBubble = true" id="dis_requ_show" class="requirements_shadow" style="z-index: 999999; height: 736px;">
+        <div onclick="event.cancelBubble = true" class="to_account_alert">
+          <div alt="" class="to_account_img" :style='backStyle' ></div>
+          <img src="@/assets/img/setting/guanzhu.png" alt="" class="to_account_text" />
+          <img class="to_account_QRCODE" data-src="https://image.shitutu.com/uploads/20200801/65e4449235808ecacc8348cc3c195528.jpg_artwork" src="https://image.shitutu.com/uploads/20200801/65e4449235808ecacc8348cc3c195528.jpg_artwork" lazy="loaded" />
+          <div class="confirm-btn" style="margin: 0.34rem auto 0px;">
+            长按二维码保存
+          </div>
+          <i class="to_detail_i van-icon van-icon-cross" style="margin-top: 1.4rem !important;">
+            <!----></i>
+        </div>
+      </div>
+
     </div>
 </template>
 
@@ -108,6 +121,13 @@ export default {
     data(){
         return{
           clientHeight: '',
+          backStyle:{
+            backgroundImage:
+              "url(" + require("@/assets/img/setting/gongzhong.png") + ")",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "100% 100%",
+            backgroundPosition:"center bottom"
+          },
         }
     },
   mounted() {

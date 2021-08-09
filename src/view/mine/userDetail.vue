@@ -18,6 +18,121 @@
         </div>
         <img src="@/assets/img/home/right2.png" />
       </div>
+
+
+
+      <div class="list-item" @click="bindShow">
+        <div >
+          地区
+        </div>
+          <div class="area_area">
+            <div class="area_area_text" > {{valueArea}}</div>
+            <!--选择省市区-->
+<!--            <van-popup v-model="showArea" position="bottom" :style="{ height: '40%' }">-->
+<!--              <van-area :area-list="areaList" @confirm="onAreaConfirm" @cancel="bindCancel" />-->
+<!--            </van-popup>-->
+          </div>
+        <img src="@/assets/img/home/right2.png" />
+      </div>
+
+<!--      <van-field readonly required clickable label="选择地区" :value="valueArea" placeholder="请选择所在地区" @click="bindShow" />-->
+
+      <!--选择省市区-->
+      <van-popup v-model="showArea" position="bottom" :style="{ height: '40%' }">
+        <van-area :area-list="areaList" @confirm="onAreaConfirm" @cancel="bindCancel" />
+      </van-popup>
+
+      <div  class="list-item">
+        <div >类型</div>
+        <div  class="user_select_div">
+          <select  id="cate_type" class="user_detail_select">
+            <option value="1">外卖</option>
+            <option value="2">堂食</option>
+            <option value="3">都有</option>
+          </select>
+        </div>
+        <img src="@/assets/img/home/right2.png" />
+      </div>
+
+      <div onclick="event.cancelBubble = true" class="list-item">
+        <div>品牌</div>
+        <div class="area_area">
+          <div class="area_area_text"></div>
+          <div onclick="event.cancelBubble = true" id="dis_requ_none" class="requirements_shadow" style="z-index: 1;" ref="homePage">
+            <div onclick="event.cancelBubble = true" class="brand_alert">
+              <div class="van-cell-group van-hairline--top-bottom" style="margin-top: 0.45rem;">
+                <div class="input_textarea van-cell van-field van-field--min-height">
+                  <div class="van-cell__value van-cell__value--alone van-field__value">
+                    <div class="van-field__body">
+                      <textarea placeholder="请输入......" v-model="pingpai" class="van-field__control"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="down_img" @click="surePingpai()" style="margin-top: 0.3rem;">
+                确定
+              </div>
+            </div>
+          </div>
+        </div>
+        <img src="@/assets/img/home/right2.png"/>
+       </div>
+
+      <div class="list-item">
+        <div>
+          细分行业
+        </div>
+        <div class="user_select_div">
+          <select id="industry" class="user_detail_select">
+            <option value="4">饺子馄饨</option>
+            <option value="5">快餐便当</option>
+            <option value="6">汉堡薯条</option>
+            <option value="7">意面披萨</option>
+            <option value="8">包子粥铺</option>
+            <option value="9">米粉面馆</option>
+            <option value="10">麻辣烫冒菜</option>
+            <option value="11">川湘菜</option>
+            <option value="12">东北菜</option>
+            <option value="13">西北菜</option>
+            <option value="14">江浙菜</option>
+            <option value="15">地方菜系</option>
+            <option value="16">炸鸡炸串</option>
+            <option value="17">特色小吃</option>
+            <option value="18">精致西餐</option>
+            <option value="19">夹馍饼类</option>
+            <option value="20">鸭脖卤味</option>
+            <option value="21">日料寿司</option>
+            <option value="22">韩式料理</option>
+            <option value="23">香锅干锅</option>
+            <option value="24">火锅串串</option>
+            <option value="25">龙虾烧烤</option>
+            <option value="26">轻食沙拉</option>
+          </select>
+        </div>
+        <img src="@/assets/img/home/right2.png"/>
+      </div>
+
+      <div class="list-item">
+        <div >
+          图片更新频率
+        </div>
+        <div class="user_select_div">
+          <select id="frequency" class="user_detail_select">
+            <option value="4">每月更新</option>
+            <option value="5">每季更新</option>
+            <option value="6">半年更新</option>
+            <option value="7">每年更新</option>
+          </select>
+        </div>
+        <img src="@/assets/img/home/right2.png"/>
+      </div>
+
+      <div style="height: 3rem;">
+        <div class="confirm-btn" style="margin: 1rem auto 0px;">
+          保存
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -26,6 +141,7 @@
 import Header from '@/components/Header.vue'
 import store from "store";
 import { index, loadMore, userIndex, seeMyCollection, collection,delCollection } from "../../http/api.js";
+import areaList from '../../assets/js/area.js'
 import { XHeader, Tab, TabItem, Scroller, LoadMore, Swiper, SwiperItem } from "vux";
 import { NavBar, Grid, GridItem, Checkbox, CheckboxGroup, Toast, Empty } from "vant";
 export default {
@@ -53,10 +169,28 @@ export default {
       result:[],
       collectData:[],
       checked:false,
-      checkAllList:[]
+      checkAllList:[],
+      areaList: areaList, //引用地区信息
+      showArea: false,
+      valueArea: '', //地区值
+      arrArea: [], //存放地区数组
+      clientHeight: '',
+      pingpai:'',
+    };
+  },
+  mounted() {
+    // 获取浏览器可视区域高度
+    this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
+    //console.log(self.clientHeight);
+    window.onresize = function temp() {
+      this.clientHeight = `${document.documentElement.clientHeight}`;
     };
   },
   watch:{
+    // 如果 `clientHeight` 发生改变，这个函数就会运行
+    clientHeight: function () {
+      this.changeFixed(this.clientHeight)
+    },
     result:function(v,o){
       if(v.length==this.collectData.length){
         this.checked = true;
@@ -66,14 +200,31 @@ export default {
     }
   },
   methods: {
-    // 全选
-    checkAll(){
-      if(this.checked){
-        this.result = [];
-      }else{
-        this.result = JSON.parse(JSON.stringify(this.checkAllList));
-      }
+    changeFixed(clientHeight) {                        //动态修改样式
+      console.log(clientHeight);
+      this.$refs.homePage.style.height = clientHeight + 'px';
+      console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
     },
+    surePingpai(){
+
+    },
+
+    bindShow(){
+      this.showArea= true;
+    },
+    bindCancel(){
+      this.showArea= false;
+    },
+    //地区选择
+    onAreaConfirm(val) {
+      this.showArea = false;
+      this.arrArea = val;
+      var addrInfo = val[0].name + '-' + val[1].name + '-' + val[2].name;
+      this.valueArea = addrInfo
+    },
+
+
+
     // 阻止冒泡
     stopBubble(){
       // do nothing

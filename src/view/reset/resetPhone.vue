@@ -1,24 +1,44 @@
 <template>
-    <div class="forgetPwd">
-        <x-header class="title" :left-options="{backText: ''}">绑定手机号</x-header>
-        <div class="input-box">
-            <input v-model="mobile" type="text" placeholder="请输入手机号">
-            <div class="code-box">
-                <input v-model="captcha" type="text" placeholder="请输入验证码" class="code-input">
-                <div class="send-code" @click="sms_send" :class="{gray:timer==0}">{{codeTips}}</div>
-            </div>
+    <div class="forgetPwd" ref="homePage" style="background-color: rgb(245, 245, 245);">
+      <Header></Header>
+<!--        <x-header class="title" :left-options="{backText: ''}">绑定手机号</x-header>-->
+      <div class="input-box">
+        <div class="line"></div>
+        <div class="r_p_box">
+          新手机号码：
+          <input type="text" placeholder="请输入手机号" />
         </div>
+        <div class="line"></div>
+        <div class="code-box">
+          <span >验证码：</span>
+          <input type="text" placeholder="请输入验证码" class="code-input" />
+          <div class="send-code">
+            获取验证码
+          </div>
+        </div>
+      </div>
+
+<!--        <div class="input-box">-->
+<!--            <input v-model="mobile" type="text" placeholder="请输入手机号">-->
+<!--            <div class="code-box">-->
+<!--                <input v-model="captcha" type="text" placeholder="请输入验证码" class="code-input">-->
+<!--                <div class="send-code" @click="sms_send" :class="{gray:timer==0}">{{codeTips}}</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--      <div class="confirm-btn">确定</div>-->
         <div class="confirm-btn" @click="confirm">确定</div>
     </div>
 </template>
 
 <script>
+import Header from '@/components/Header.vue'
 import store from "store";
 import {XHeader} from 'vux'
 import {resetPwd,smsSend,changeMobile,userIndex} from '../../http/api.js'
 export default {
     components:{
-        XHeader
+        XHeader,
+        Header
     },
     data(){
         return{
@@ -26,11 +46,32 @@ export default {
             captcha:'',
             timer:1,
             codeTips:'获取验证码',
-            userinfo:{}
+            userinfo:{},
+            clientHeight: '',
         }
     },
+  mounted() {
+    // 获取浏览器可视区域高度
+    this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
+    //console.log(self.clientHeight);
+    window.onresize = function temp() {
+      this.clientHeight = `${document.documentElement.clientHeight}`;
+    };
+  },
+  watch: {
+    // 如果 `clientHeight` 发生改变，这个函数就会运行
+    clientHeight: function () {
+      this.changeFixed(this.clientHeight)
+    }
+  },
     methods:{
-        sms_send(){ //获取验证码   
+      changeFixed(clientHeight) {                        //动态修改样式
+        console.log(clientHeight);
+        this.$refs.homePage.style.height = clientHeight + 'px';
+        console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
+
+      },
+        sms_send(){ //获取验证码
             let data={
                 mobile:this.mobile,
                 event:'changemobile'
@@ -127,6 +168,7 @@ export default {
     .forgetPwd{
         width:100vw;
         .input-box{
+          background-color: #fff;
             >input{
                 width:100%;
                 height:1.733333rem;
@@ -137,40 +179,51 @@ export default {
                 color: #D8D6D9;
             }
             .code-box{
-                height:1.733333rem;
-                border-bottom: .013333rem solid #D8D6D9;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+              width: 90%;
+              margin-left: 5%;
+              height: 1.733333rem;
+              display: -ms-flexbox;
+              display: flex;
+              -ms-flex-pack: justify;
+              justify-content: space-between;
+              -ms-flex-align: center;
+              align-items: center;
                 input{
-                    height:1.7rem;
-                    border: none;
-                    padding:0 .426667rem;
-                    box-sizing: border-box;
-                    color: #D8D6D9;
+                  height: 1.7rem;
+                  border: none;
+                  box-sizing: border-box;
+                  color: #333;
+                  width: 80%;
+                  text-indent: .25rem;
                 }
+              span{
+                width: 26%;
+                font-size: .4rem;
+              }
                 .send-code{
-                    width: 3.146667rem;
-                    height: 1.066667rem;
-                    border: 1px solid #ECEBED;
-                    text-align: center;
-                    line-height: 1.066667rem;
-                    color: #D8D6D9;
-                    border-radius: .106667rem;
-                    margin-right: .4rem;
+                  width: 2.946667rem;
+                  height: .666667rem;
+                  border: 1px solid #44b7fc;
+                  text-align: center;
+                  line-height: .666667rem;
+                  color: #44b7fc;
+                  border-radius: .106667rem;
+                  letter-spacing: .05rem;
+                  font-size: .3rem;
                 }
             }
         }
         .confirm-btn{
-            width: 6.666667rem;
-            height:1.066667rem;
-            border-radius: .56rem;
-            font-size: .48rem;
-            text-align: center;
-            line-height:1.066667rem;
-            margin:1.44rem auto 0;
-            color: #fff;
-            background-color: #4E83FE;
+          width: 8.666667rem;
+          height: 1.066667rem;
+          border-radius: .2rem;
+          font-size: .38rem;
+          text-align: center;
+          line-height: 1.066667rem;
+          margin: 1.44rem auto 0;
+          color: #fff;
+          background-color: #009dfb;
+          letter-spacing: .15rem;
         }
     }
 </style>
