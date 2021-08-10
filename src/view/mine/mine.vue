@@ -3,7 +3,7 @@
       <Header></Header>
       <div style="background-color: rgb(245, 245, 245);">
 
-      </div>
+
         <van-pull-refresh v-model="isLoading" @refresh="onRefresh" style="background-color: rgb(245, 245, 245);">
             <template #loosing>
                 <div style="color:#fff;">释放即可刷新</div>
@@ -45,17 +45,17 @@
 <!--                            <b>{{userinfo.free_download_num}}张</b>-->
 <!--                        </span>-->
 <!--                    </div>-->
-                  <div class="my-download">
+                  <div class="my-download ele-download">
                     <van-grid :column-num="2" v-if="buyData.length>0">
                       <div  class="down_box"  v-for="item in buyData"
                             :key="item.id"
                             @click="goDetail(item)">
                         <img  class="img-items"   v-lazy="item.url" lazy="loaded" />
                         <div class="down_box_right">
-                          <p >图片ID：159253631610560</p>
-                          <p >名称：中式快餐套餐饭图片鸡翅套餐</p>
-                          <p >分类：快餐,简餐便当,米饭</p>
-                          <p >下载时间：12-04 15:24:48</p>
+                          <p >图片ID：{{ item.uuid }}</p>
+                          <p >名称：{{ item.title }}</p>
+                          <p >分类：{{ item.tag_name }}</p>
+                          <p >下载时间：{{item.create_time}}</p>
                         </div>
                       </div>
 <!--                      <img-->
@@ -142,6 +142,7 @@
             </div>
 
         </van-pull-refresh>
+      </div>
     </div>
 </template>
 
@@ -443,6 +444,12 @@ export default {
                     color:$backgColor;
                 }
             }
+         .ele-download{
+           height: auto;
+           position: absolute;
+           top: .933333rem;
+           bottom: 0;
+          }
             .my-download {
                 height: auto;
                 overflow-y: scroll;
@@ -456,12 +463,12 @@ export default {
                     }
                 }
             }
-            .ele-download{
-                height:auto;
-                position: absolute;
-                top:3.733333rem;
-                bottom:0;
-            }
+            //.ele-download{
+            //    height:auto;
+            //    position: absolute;
+            //    top:3.733333rem;
+            //    bottom:0;
+            //}
             .vip-wrapper {
                 padding: 0.533333rem 0.266667rem;
                 border-radius: 0.266667rem;

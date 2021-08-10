@@ -43,9 +43,10 @@
 
           <div  class="solid_border" style="margin-bottom: 0.4rem; margin-top: 0.5rem;"></div>
 
-          <div class="images_title">米饭</div>
+          <div class="images_title">{{ goodsDetail.title }}</div>
 
-          <div class="down_img" style="font-size: 0.5rem;">图片下载</div>
+          <div class="down_img" style="font-size: 0.5rem;" @click="downLoad">图片下载</div>
+          <div v-if="userinfo.is_elme === 0" @click="goDownCard" class="purchase_card">购买下载卡</div>
 
           <p style="color: rgb(153, 153, 153); text-align: center; font-size: 0.35rem; margin-top: 0.3rem;"> 立即下载即可获得高清无水印大图</p>
 
@@ -58,7 +59,7 @@
             </div>
             <div  class="de_box_2">
               <span  class="de_l">图片类型:</span>
-              <span  class="de_3">JPG1250&times;834</span>
+              <span  class="de_3">JPG{{imgWidth}}&times;{{imgHeight}}</span>
             </div>
             <div  style="clear: both;"></div>
             <div  class="de_box_3">
@@ -74,15 +75,20 @@
             <div class="de_box_5">
               <div class="de_4_box">
                 <span class="de_4">收藏</span>
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAsCAYAAAAacYo8AAAEeElEQVRYhc2Za4hWRRjHf/vuZtkuKtpFrDRLhHBbbQNNukg3sSSqD1ZQQUkUhNEFoaLI6kMqlFFUuGS3LwZ9SSVKKoKIij6oa20UluvWJhVZdnXxkm888J98OJzznnP2zLvrHw4z55w58/znOTPP/GempaenhyahRdXWm1F9rQl1LgK+AA7r+h64PbaRtsj1LQY2JRxyGmC/tQNYE8tQTI+PAV5QnUPAg8Ay4Ge9fxw4IZaxmMSXAlOVXw6sAp4HbtWzdj2PgljE2xypQWCde/cO8Jnyy2J5PRbxm4AzlX8COJB4/6hS8/pdMQzGIG7eflj53cDLKWU2O6/fDUyoajQG8Rudt59M8XbASqXjgXuqGq1K3L6/X/mfFPayYGGyV++M+LiqhqvgOuAsfb9aYTALNoM+pnfm9TtHi7h9+4jyv+R4O2AjR7y+XJPSsI2XhQ2sBfJw8PaaHG8H1PWdYRLwHLAQmFKWRCOR1QrMAGYDXS6dmij3K3A68HdBm+asPtfogN+kccLVp+vPtEq8VrEKr5FImgN0AmNzSPwOrChBGgmvh4C1wEnu+UT9yQWJ8t8BnwPvAq8GW8HjNsLfAi5sYGyHKtju0sEShNNwInC2/mSnu9ozyvcDlwIDwePPONLWoi0Jgl8W7MNlYYP6A10BpuOnq0GdSufq2RnAS0Y+EL9Z6fvA1cC+JpAsiro8268ohBqzTkLuEht/NfXtVhVYO8qks2CNecW9a6slllZzjw6eqZjnHh4OxD/SA5sUbjlKiHpc77TOt8DBMAHdq8FX0y+pLIIi4jZgPXCMEQbuwM2cFkUud8H+aY7oitHEfcCLbjm4OEQgP+V/DFwE7NG96ZBn3TbDSMMWH0/Jpjn0MuC9wCGpVSxmz9eWAlqtvOaizkigRX98hWzt0Wz6ibedJrKs858PfK17i/FvAseNAOlWxeswxnZrYuxNFsxShz+o22zR/VXA21XFfw5se+N1TTKGncAFzoGFiKPp2HTBh7q/WH0sS0dUxQZgierok6cHsurM0+N/AFdq4Bq6gUNNIj5L6Tdy0o+NChdZSOxzsvUrYH91jqnYrof/usiWiaIroG6lW5tEGkd8JnB8XuEixE+RbqbJxEPkqEnONkQR4t0uvy0+3//hQ96cvMJFiJ+jtJ4WTyOi342lqMQtrv7VROJ1189n5xUuQvxcpWX7d8cwdmYD8a48bnnEJ+pEgRL92wg/oMljQPvkRRsQiHdofZmJPOJ+YOZ53BNeqQ2fdu0tFm1A4QGaR7zL5bM8PkESdNARRpNV2Fou2oBw6IVW98MmHkTVAe00pREekAQNe969WmpZLD4PuKJEA4ZcABhfhXhQZmPCkimFcDBghK9V93rDeW5ziQYsdfXtaEQs74B2rCo4Vfe7gJMTU3KvlnkbCx7GLlLD/ap9v7baZup+rw4L9mZVkufxIe2BhwqmO9LewxtKnCCn/YFjHel/gBsakTYUOaD9FJgmY5OlFm0QmfysctxtDbAr7AhbF7QzUZPQDUkD/AdHHvwLUAFq4AAAAABJRU5ErkJggg==" alt="" class="de_4_img" />
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAsCAYAAAAacYo8AAACp0lEQVRYhdWZv2sUURDHPwlKkOCPTlBBEE38cYYQBNMrxEbExsbGWtDGIDlEk9IrDJbXBEljLdik0T8g/8ChBhNBA3ZiiBaCkTnmjk283Te7O/sjX1ju9r15M5+d2903790QS38oSIfU7e8i3A8X4PMEsAL80mNF21zlDS7+3gIzkbYZbXON5Q1+B5ga0D6lfW7yBBdfzxL6pc8tnie4ZPRCQr/0uWXdC3wIeGKwa6ptbnmB3wIaBrsJta0FuGRwPoX9vEfWPcAlg5Mp7Cc9su4B/jTDGMvzkKi84Ddi3tshXdGxlYAfBhZyjF9QH5l0IDBICqWzwDlgTD/lfBw4ngNadBX4CXwHPgBrwCfgo36uJRVo0erwDHBTJ4oe6KmccHn1NXIhHa15PkfB7wKvgIMVg4YksPeA1wJ+FPgGjNabua9t4OSwznj7BRplbQj4OrBTAyCrhHVdwDeBF/uDuSth3ey9xx8D7YqBLGora38CkvTfrzl8Wxm7t3V05uzBL1bHFqvFKDQDpnzpeAS06sHbVUuZdr1A4mqVuZrAt5TlPyUVWXO61KpKzThoDNXh84rgmxo7VpayVhzMFsu5S7MhaPZUh8l2sFVCabCtNXpwJrcuJE6XVM+MaqygrOATxbFmi2UFv5iPJZVMsazgl8th7sqysWQGv5SPJZXcwGVBfb487m6s0CLeBC6r+hEfJpNGNGaiLOBl3ibmmBbwrA/mGz2yKBiziIy/082e23rI9/cpfbhkfNwYbBW4rsfqnvZrA9qTNOYB/jfQ39HMTmu24yR902rbCfh0qVWWY9o3dFepofeyZYtjR20bOnYjZcy+LOAvdWd1S8+/AA/1Flo2/CKDJGNkrPh4oD5FEkNiScxEpflLXC7yCPAjA6hFx3T3NpwI4B8SdXVMrw7tbAAAAABJRU5ErkJggg==" alt="" class="de_4_img" style="display: none;" />
+                <img v-if="goodsDetail.isCollection" src="@/assets/img/classify/collection_hover.png" @click="addShopCar()" alt="" class="de_4_img"  />
+                <img v-else src="@/assets/img/classify/collection.png" @click="addShopCar()" alt="" class="de_4_img" />
                 <div style="clear: both;"></div>
               </div>
               <div class="de_4_box">
                 <span class="de_4">举报</span>
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAYAAAA6GuKaAAAEZElEQVRYhc2ZT4hVVRzHP++OBQOjTm5c6bRxRMIpcyG5EWwhBTFGUDhhBAlBIGShYEMOJuYiqIUgDAQpw4y1iHQVbQbcNLgQJRFRN42t3Mg4TTwiZl6c4fsbfu/47rt/Z+oDl8e5957f7/vOPed3zvmdxvj4OBXoAXYBrwIvA9uBrcAGPVsE5oGHwD3gBjAN3NSzUqwrWW8HcAR4F9jc5b0g/DldLwJv6/4jYBL4Frhb1HlS8P0h4CfgDvBJhuBubFb9O7I3VKRy3pbuA84AR9V6MY+Ba8Bt4AHwBPgTWA9sBLYBO4F9wCZXtwEcBN4AzgOfAwt1iH4J+AEYjO4H4xO6rgNLOWyFL7sHOKyrT/dDQ3wMvA68A9zKMtKN0Aq/RoKbwBfAFuAjYCanYPTejOptkZ2mez4ofwfLig4t8SPQ6+79okE4BszlFJrGnOzskF2jV34PFxUd/unF6Pko8BowW1FszKzsjka6Lqa1eCfRoQ9PuWf/AIeAL4FWzYKNluyPyJ9pm5KeNuKB2KdB57vEe8D3BQTs1wRjhIllOmfdy/qd0m+v9Oz2USVu6TPRoBstKDjwAfCdu0K5CJejrjIoXSt40UOKw0YYHOcKCsZ93rRyHs5Fg/Oon4C86NNu4ghh6MOSfbiZUc5DS/6tbo/0tYkOYWfYGfuqQpT4O6Ocl1npMIalc0X0EU2pqMN/U9JRnaKRDhuADelcFt2j1ZoxUXHiqKN7GHPSYwSdPYnWw361NpFqIh91DESP1xN07kq0gDcea/FThb+iunG5KNely9ifaMdhXCuw+Ekj3pGU3qGIJekydifaIhm3KwpG6+hu5TJ4XduTaMp9UIODOLbXsV7xurYm2oQaT6rbf8pG3TY3JNH2qY5PuRp4Xcshzw+U9TU4jGN81c0Cka7FRHkJY2N1+6uC1zWfaL1rbKvB43xGuQxe18NEmR9jZw0O4jhfNe4T6bqXKFVl7CuRwImZ0wrNrqp9OpEu48Y62rdCm5SXmKng5Hfg+Wo629gTJXimEyUDH7mbqVv3/wivJ+i8aSFvMhLd/z8R3B+JnrSQh7KXNt2GHfmxCo5G1I/tCuWyHHOps5Z0rgy6kG696gwfBwZKOnpWcdWuUC7DgHQYVy0t7CPFmJsdQ75h3G3B1pqG/Fv+ZVH6iEX/pnSrcQA4WULsQhTyMlO3HTgp/8Z56VsmPr7oU9z2CZsRl/lZCw65DFPgflaGaUH5Yb8ZvSRDayX4kis3pafta3Wa/W6pdW36fUb//LNV7OMN2Z+SP+R/pFOCPW3KvgK8H60bzgI/V4gqaQzI7ln3fEn+r3Sq022dEbbub0Vd5YDCzukaJqB+2bkbDbqm/KamMrIWR+Gf7tVgMEIYOgX8AVwAXimwyEr0/gXVPxWlle/LX8cWNvIefq7W6ZaxWOR0q+iJ7ZA+6XBNg7KlmW7Mx+Esiq6dg+E3gReAr6PVYRFCvVA/2An2cgsOlD1mDoPnU+DEmp+NA/8Cd58PzFCzOs8AAAAASUVORK5CYII=" alt="" class="de_4_img" />
+                <img src="@/assets/img/classify/jubao.png" @click="goReport()" alt="" class="de_4_img" />
                 <div style="clear: both;"></div>
               </div>
+<!--              <div  class="de_4_box">-->
+<!--                <span  class="de_4">分享</span>-->
+<!--                <img  src="@/assets/img/activityDetail/qq.png" alt="" class="de_4_img" />-->
+<!--                <div  style="clear: both;"></div>-->
+<!--              </div>-->
               <!---->
             </div>
             <div id="qrcode" title="https://shitutu.com/activityDetail?id=11028" style="display: none;">
@@ -93,7 +99,7 @@
           </div>
 
 
-          <div data-v-5208b837="" class="solid_border" style="margin-top: 0.4rem;"></div>
+          <div  class="solid_border" style="margin-top: 0.4rem;"></div>
 
 
 <!--            <div class="image-intro">-->
@@ -146,12 +152,40 @@
                 <div class="buy-now" @click="goPayment" v-if="userinfo.is_elme==0">立即下载</div>
                 <div class="buy-now" @click="downLoad" v-if="userinfo.is_elme==1">无水印下载</div>
             </div>
-            <div
-                class="btn-dowload"
-                v-if="goodsDetail.isBuy && userinfo.is_elme==0"
-                @click="downLoad"
-            >下载</div>
+<!--            <div-->
+<!--                class="btn-dowload"-->
+<!--                v-if="goodsDetail.isBuy && userinfo.is_elme==0"-->
+<!--                @click="downLoad"-->
+<!--            >下载</div>-->
         </div>
+
+      <div  @click="goReport()" :id="dis_requ_show" class="requirements_shadow" ref="homePage" >
+        <div onclick="event.cancelBubble = true" class="requirements demand-wrapper-commit" style="height: 9.5rem;">
+          <div class="requirements_title">
+            举报
+          </div>
+          <ul class="box">
+            <li class="">图片损坏</li>
+            <li class="">图片模糊</li>
+            <li class="">侵权/盗版</li>
+            <li class="">图片重复</li>
+            <li class="">下载失败</li>
+            <li class="">色情低俗</li>
+            <li class="">其他原因</li>
+          </ul>
+          <div class="van-cell-group van-hairline--top-bottom">
+            <div class="input_textarea van-cell van-field van-field--min-height">
+              <div class="van-cell__value van-cell__value--alone van-field__value">
+                <div class="van-field__body">
+                  <textarea placeholder="请输入举报内容" class="van-field__control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a data-v-5208b837="" href="#" class="down_img" style="margin-top: 0.6rem;">提交</a>
+        </div>
+      </div>
+
     </div>
 </template>
 
@@ -196,10 +230,25 @@ export default {
             vipStatus: "开通会员",
             downName: "",
             show: false,
-            isWeixin: false
+            isWeixin: false,
+          imgWidth:0,
+          imgHeight:0,
+          clientHeight: '',
+          dis_requ_show:'dis_requ_none'
         };
     },
+  mounted() {
+    // 获取浏览器可视区域高度
+    this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
+    //console.log(self.clientHeight);
+    window.onresize = function temp() {
+      this.clientHeight = `${document.documentElement.clientHeight}`;
+    };
+  },
     watch: {
+      clientHeight: function () {
+        this.changeFixed(this.clientHeight)
+      },
         details_id(v, o) {
             let params = {
                 id: this.$route.query.id
@@ -218,6 +267,43 @@ export default {
         }
     },
     methods: {
+      changeFixed(clientHeight) {                        //动态修改样式
+        console.log(clientHeight);
+        this.$refs.homePage.style.height = clientHeight + 'px';
+        console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
+      },
+      getImgInfo () {
+
+        var that = this;
+        var img = new Image();
+        // 改变图片的src
+        img.src = that.goodsDetail.image_url;
+        let res = {}
+        img.onload = function () {
+          res = {
+            width: img.width,
+            height: img.height
+          }
+          that.imgWidth = res.width
+          that.imgHeight = res.height
+        //  that.model.data.firstPicWh = res;
+         // console.log(res);  //打印的即是图片的宽高
+        }
+        // let self =this;
+        //
+        // let img =new Image()
+        //
+        // img.src=self.goodsDetail.image_url
+        //
+        // img.onload=function () {
+        //   console.log(12312312312)
+        //   console.log('图片原始高度', img.height)
+        //
+        //   console.log('图片原始宽度',img.width)
+        //
+        // }
+      },
+
         goDetail(e) {
             this.$vux.loading.show({
                 text: ""
@@ -228,6 +314,13 @@ export default {
             this.details_id = e.id;
             this.$router.push({ path: "/activityDetail", query: { id: e.id } });
         },
+      goReport(){
+        if(this.dis_requ_show === 'dis_requ_none'){
+          this.dis_requ_show = 'dis_requ_show'
+        }else{
+          this.dis_requ_show = 'dis_requ_none'
+        }
+      },
         addShopCar() {
             //添加收藏
             if (!store.get("userinfo") || !store.get("userinfo").token) {
@@ -267,6 +360,9 @@ export default {
                 query: { id: this.$route.query.id }
             });
         },
+      goDownCard(){
+        this.$router.push({ path: "/downCard" });
+      },
         downLoad() {
             //下载图片
             download2({
@@ -282,6 +378,16 @@ export default {
                     window.location.href = res.data.url;
                 } else {
                     this.$vux.toast.text(res.msg, "middle");
+                  this.$dialog.confirm({
+                    title: "提示",
+                    message: "是否跳转购买下载卡",
+                    confirmButtonText: "确认", //改变确认按钮上显示的文字
+                    cancelButtonText: "取消" //改变取消按钮上显示的文字
+                  }).then(()=> {
+                    this.$router.push({ path: "/downCard" });
+                  }).catch(() => {
+                    console.log("点击了取消按钮噢")
+                  })
                 }
             });
         },
@@ -304,6 +410,7 @@ export default {
         seeImageDetail(params).then(res => {
             if (res.code == 1) {
                 this.goodsDetail = res.data;
+              this.getImgInfo()
             } else {
                 this.$vux.toast.text(res.msg, "middle");
             }
@@ -317,5 +424,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+ul{
+  padding: 0;
+  list-style: none;
+  width: 90%;
+  margin-left: 5%;
+}
+li {
+  width: 30%;
+  height: 30px;
+  display: inline-block;
+  font-size: .35rem;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+li:before {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  line-height: 20px;
+  content: "";
+  border: 1px solid #333;
+  margin-right: .11rem;
+  transition: all .3s linear;
+}
 </style>

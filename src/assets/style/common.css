@@ -1234,3 +1234,67 @@
   vertical-align: middle;
   padding: 7px 5px;
 }
+.purchase_card {
+  background-color: #fb5300;
+  font-size: .5rem;
+}
+.search_desc {
+  width: 100%;
+  height: .5rem;
+  margin-top: .3rem;
+  text-align: center;
+}
+.search_desc_text {
+  font-size: .34rem;
+}
+.color_blue {
+  color: #009dfb;
+}
+.search_desc_text {
+  font-size: .34rem;
+}
+.no_search {
+  width: 60%;
+  margin-left: 20%;
+  padding-top: 2rem;
+}
+.no_search_img {
+  width: 4rem;
+  height: auto;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  margin: 0 auto;
+}
+.no_search_div, .no_search_p {
+  width: 100%;
+  font-size: .35rem;
+  text-align: center;
+  line-height: .5rem;
+}
+.no_search_div {
+  color: #009dfb;
+  margin-top: .2rem;
+}
+.no_search_div, .no_search_p {
+  width: 100%;
+  font-size: .35rem;
+  text-align: center;
+  line-height: .5rem;
+}
+.no_search_p {
+  color: #dbdbdb;
+  margin-top: .3rem;
+}
+.gotop {
+  text-align: center;
+  position: fixed;
+  right: .5rem;
+  bottom: 30px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  color: #000;
+  z-index: 99999999999;
+  width: 1rem;
+}

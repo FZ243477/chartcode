@@ -160,6 +160,7 @@ export default {
         };
     },
     watch: {
+
         // 切换父选项
         activeIndex(v, o) {
             console.log(this.responseData.length - 1, v);
@@ -212,9 +213,10 @@ export default {
                                 hotItem = element;
                             }
                         });
-                        res.data.splice(0, 1);
+                        res.data.splice(9, 10);
                         this.responseData = res.data.reverse();
-                        this.responseData.unshift(hotItem);
+                        console.log(this.responseData,2222)
+                       // this.responseData.unshift(hotItem);
                         if (this.responseData[0].childlist.length > 0) {
                             this.params.tags_id = this.responseData[0].childlist[0].id;
                             this.getImgList();
@@ -302,6 +304,11 @@ export default {
         }
     },
     created() {
+      let params = {
+        id: this.$route.query.id
+      };
+      this.activeIndex = params.id
+      console.log(params)
         console.log(this._isMobile());
         let urlToken = this.GetUrlParam("token");
         console.log(urlToken)

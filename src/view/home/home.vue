@@ -8,21 +8,16 @@
             </div>
             <div class="nav_border"></div>
             <div class="nav_tabs">
-              <!---->
-              <div class="nav_li">
-                个人中心
-              </div>
-              <!---->
-              <div class="nav_li">
-                下载记录
-              </div>
-              <div class="nav_li">
-                我的收藏
-              </div>
-              <!---->
+              <div v-if="userinfo.is_elme === 0" class="nav_li">ID:{{userinfo.nickname}}</div>
+              <div class="nav_li">个人中心</div>
+              <div v-if="userinfo.is_elme === 0" class="nav_li" @click="goDownCard">下载卡</div>
+              <div class="nav_li">下载记录 </div>
+              <div class="nav_li">我的收藏</div>
+              <div v-if="userinfo.is_elme === 0" class="nav_li">退出登录</div>
             </div>
             <div class="nav_footer">
-              <a :href="'tel:'+messageContent.phone" class="call_phone" style="width: 4rem;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAArCAYAAADhXXHAAAAC0ElEQVRYhc2ZTYhNYRjHf0bGGMlXyNDYTEQaXyuahixMImnSZFZWsyFlLLDCTmwoSbGYjJUp0cQ0IXaiJkkpCylNjIXyNRhj6q/n9p7pznXuvec995xz51fP7jzP/Z33nHPf531fJIXFMkl9kkYkHZE0s8h1mUbYj7U4yXyeSFo63WT3SRpTOMOSNkwX2W2SfhcRDfgmaUe1ZGfkjGE+8BpYQXnGgT3AowjXJkqNK3YmoqhRC/QDO7OWtZFdBHwA6jxzfwKtwIuU3P7DRrYjhqgxF7gHNKTsOInJtlWQvxzosSeUsFcoJrupwhq7gPaU/KZgsosTqNOUoFNR7ANThTW+A2uBjyl65rCRnaiwRlcWojjZkQryTwJ9CfqUxGTfx8w9D1zIyDOHyT6LkWeip1LwKYnJPvXM6amGKE72ITDmkXMrRZ+SmOwoMOCR01wFzxxB13XdI6czJZeyBP2sze1vgNUR83YDg1nLBiMr94VH5RIwu1qyRi/wNmLeGs+bS4aCdU57mTVYIYeqvRQf9JAdl7S3mrJNkkY9hH9VKHxQUmtcWYvDnq/DeIxXwnZ5buTVGJDUGEfW/tL6PYWNc5JqIojWSrobkv/VfTdeshYLJb2LIfxYUkOJuvWS7pepcdpX1mK924Xx5YukrpBRrnc3E4Wr7glHlrVoc+9kHF5J6pRUJ2mlpCHPGpd9ZXEbdnGF5fbQim34leNY4BH0BlGwfuA2MCfjecvWiFuBIR9ZXJK1kwvScwvlJbDFVxbXF9xxy+8s6Ygja8xzjc/+DGUf1ES4KIwfbsvoOPAnXcdJmuOObD7rgJvA5sT1pnIibvNRGLMkdbvpMg16bYJISjYIO9G5JmkiQdGLwdFW0rJBWPd0JcKBSik+SToQZwaLG0skHZX03EPys6SzdnxQ+JtJfGBRWQVsB1qAjUCjOx74Cwy7swnbcLGtfzuvmArwD87H7ePp0eXXAAAAAElFTkSuQmCC" class="call_phone_img" /> 点击联系我们 </a>
+              <a :href="'tel:'+messageContent.phone" class="call_phone" style="width: 4rem;">
+                <img  src="@/assets/img/home/phone.png" class="call_phone_img" /> 点击联系我们 </a>
             </div>
           </div>
         </div>
@@ -70,7 +65,7 @@
                    :placeholder="searchPlaceHolder" class="search_text" />
             <div type="button" class="search_submit">
               <span style="display: table-cell; vertical-align: middle;">
-                <img src="data:image/png;base64,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" class="button_img" /></span>
+                <img src="@/assets/img/home/button_img.png" class="button_img" /></span>
             </div>
             <div class="history_box" :class="{'display_show':showSearchHistory}">
               <div class="history_box_content">
@@ -97,7 +92,7 @@
       </div>
 
       <div class="bl_1">
-        <div class="bl_box" v-for="(item,index) in classifyList"  :key="index">
+        <div class="bl_box" v-for="(item,index) in classifyList"  :key="index" @click="goClassify(index)">
           <p class="bl_box_title_p">{{item.title}}</p>
           <div class="bl_box_title"></div>
           <img class="class_img2" :src="item.url" lazy="loaded" />
@@ -109,6 +104,7 @@
         <img class="bl_img2" :src="messageContent.logo" lazy="loaded" style="height: auto;" />
       </div>
 
+      <div v-if="userinfo.is_elme === 0">
       <div class="hidden_title">
         <p class="hidden_title_p">合作品牌</p>
         <div class="title_border"></div>
@@ -138,7 +134,7 @@
           <div style="clear: both;"></div>
         </div>
       </div>
-
+      </div>
       <div v-if="userinfo.is_elme === 1" style="height: 2rem;"></div>
 
     </div>
@@ -230,6 +226,9 @@
             console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
 
           },
+          goDownCard(){
+            this.$router.push({ path: '/downCard' })
+          },
           chooseSearchTab(e,f){
             this.choiceSearchTab = e
             this.choiceSearchTabName = f
@@ -309,6 +308,9 @@
           },
           goCloseNav(){
             this.navShow = false
+          },
+          goClassify(e){
+            this.$router.push({ path: '/classify', query: { id: e } })
           },
             // 获取新首页数据
             getData() {
@@ -454,5 +456,9 @@
 </script>
 
 <style lang="less">
-
+input::placeholder {
+  font-size: .4rem;
+  font-family: Arial;
+  letter-spacing: 0.02rem;
+}
 </style>
