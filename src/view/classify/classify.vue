@@ -168,21 +168,21 @@ export default {
                 this.activeIndex = v;
                 return;
             }
-            if (this.responseData[v].childlist.length > 0) {
-                this.params.page = 1;
-                this.params.tags_id = this.responseData[v].childlist[0].id;
-                this.childSel = 0;
-                this.classifyData = [];
-                this.getImgList();
-            } else {
-                this.params.page = 1;
-                this.params.tags_id = this.responseData[v].id;
-                this.childSel = 0;
-                this.classifyData = [];
-                this.getImgList();
-                // Toast('该分类暂无内容，请浏览其他分类');
-                // this.activeIndex = o;
-            }
+            // if (this.responseData[v].childlist.length > 0) {
+            //     this.params.page = 1;
+            //     this.params.tags_id = this.responseData[v].childlist[0].id;
+            //     this.childSel = 0;
+            //     this.classifyData = [];
+            //     this.getImgList();
+            // } else {
+            //     this.params.page = 1;
+            //     this.params.tags_id = this.responseData[v].id;
+            //     this.childSel = 0;
+            //     this.classifyData = [];
+            //     this.getImgList();
+            //     // Toast('该分类暂无内容，请浏览其他分类');
+            //     // this.activeIndex = o;
+            // }
         }
     },
     methods: {
@@ -190,9 +190,7 @@ export default {
         changeChild(name, title) {
             console.log(this.activeIndex);
             this.params.page = 1;
-            this.params.tags_id = this.responseData[this.activeIndex].childlist[
-                name
-            ].id;
+            this.params.tags_id = this.responseData[this.activeIndex].childlist[name].id;
             this.classifyData = [];
             this.getImgList();
         },
@@ -215,7 +213,6 @@ export default {
                         });
                         res.data.splice(9, 10);
                         this.responseData = res.data.reverse();
-                        console.log(this.responseData,2222)
                        // this.responseData.unshift(hotItem);
                         if (this.responseData[0].childlist.length > 0) {
                             this.params.tags_id = this.responseData[0].childlist[0].id;
@@ -304,11 +301,11 @@ export default {
         }
     },
     created() {
+      this.getData();
       let params = {
         id: this.$route.query.id
       };
       this.activeIndex = params.id
-      console.log(params)
         console.log(this._isMobile());
         let urlToken = this.GetUrlParam("token");
         console.log(urlToken)
@@ -329,7 +326,7 @@ export default {
                 });
             }
         }
-        this.getData();
+
     }
 };
 </script>

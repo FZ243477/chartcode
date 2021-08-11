@@ -16,19 +16,19 @@
           <div class="user_message" :style='backStyle'
                style="">
             <div class="user_content">
-              <img class="user_logo" data-src="https://image.shitutu.com/uploads/20190325/f57ebce8a72b823912904fe76eda0909.png_artwork" src="https://image.shitutu.com/uploads/20190325/f57ebce8a72b823912904fe76eda0909.png_artwork" lazy="loaded" />
+              <img class="user_logo"  :src="userinfo.avatar" lazy="loaded" />
               <div class="u_l_1">
-                <p class="u_l_p1">ID:18891948754</p>
-                <p class="u_l_p2">已使用食图图的第247天</p>
+                <p class="u_l_p1">ID:{{userinfo.nickname}}</p>
+                <p class="u_l_p2">已使用食图图的第{{userinfo.user_day}}天</p>
               </div>
               <div style="clear: both;"></div>
               <div class="use_m_l">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAvCAYAAACVDljoAAACn0lEQVRYhe3ZTWtcVRjA8d+EeMNQrVhaa8Rm0Y0vsWu7qWkXKqhEcGEFaf0AGt2ZTuiuyLSQviAIbUDQoAtB8BWXgvQjNCgqFEoXgRg3uhgyxkwX9w4tMXPvOXfuZFLIH4a5wznPef7Mebnnnltbm51TESN4FHuz339jBRt5Qc16Etx4FbyMW1jGb9lnGbfxShUJqhB9Fd/jiS3KHsd3eK3fJP2KJlgoaGcE1zDWT6J+RZ/HeEC9gzjRT6Kyog/iA3wSEbOA2Sw2mjKi0/gdFzAREXcI5/GHEmM2RrSGD/GtsO7uxWP4Bs2szSBGIxJcwXuRUnmcwZ7QNkP/0ZnQBiOZabTaMyEVQ0QnMd+fTy7zjVZ7sqhSiOhl6Xo5KBJcKqpUJHocL1RhU8CLjVZ7Kq9Ckeg7FcoUkZsrT/QR6Zq5XUw3Wu2HexXmiU4Z7NjczJj0lrwleaLPVe9SyNFeBXmiTw1ApIgnexXkie4fgEgR+3oV5Ik+NACRIkqJ7ih2RatmV7RqdkWr5t5HkSM4JT2WIe7BrSomGq32p9n1Chab9WQJatnZ0+v4Utwz1HbwL04268nX3a6/audJwgP4mHSM1nBgqDr5jDda7VpXdKdTu29m/Qg6w5YIoNMV/XXYJjksNetJpzvTj+EtOfvBIbGKz7m7JP2Fj4Zhst1n+AMndJGfwmeDEGi02uea9aTwQDhU9Dr+wbN9Wf2fX2RjsIjQrt/Au6V1tqaFN5v1ZC2kcswY/Vl6HF4FG3gDN0IDYifTWfwYGbOZdZzGDzFBsaLr0i3hV5FxXVbxEr6IDSyzPK1Ju+196QQLoYNFPIOfSuQsvY52pDeIw5iTjrWt9gw3cRFP4238WTJf35vlVelrmO6rmNHsu4P/FLxZjuEOxNBvZWaX6lgAAAAASUVORK5CYII=" class="user_icon" />
-                <p > 剩余下载次数 <span data-v-37be036a="" style="color: rgb(0, 157, 251);">0张</span></p>
+                <img src="@/assets/img/downCard/free.png" class="user_icon" />
+                <p > 剩余下载次数 <span style="color: rgb(0, 157, 251);">{{userinfo.free_download_num}}张</span></p>
               </div>
               <div class="use_m_r">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAxCAYAAACYq/ofAAADmUlEQVRogdWabWhOYRjHf9sw0/jGWsoYhklZPnhpHywheclbyUssVgoh+SCv+SQkCvNBJEtNEkVevngreWu0FFrClH1YXrc1Y9Z06Trr6TjneZ77nPs8z7N/PT1v51z39Tv3fe5zXdd9Z1H9HUsaA1QA5cA4oATI9zD9CWgA6oG7wH3gR1gXwoIUApXAamBsQBt/gBtADXBVvxsrKMhwYAewFugbEMBL74FDwBmg0+TEbMOGcoG9wGtgvWUI0QjglA67CpMTTUDGA8+B/UB/cx+NJPfYHeCEXjxrIMuAp0BpxABubQQeAkMTHZgMyBagFhhg3c3kNElhSuIdnQhkK3AsxY57qQh4AIz0OyAeyHLgaErcTE4FwG1gsNfRfiATgLNpdtxL0iMXvPz2AskDLqVgZgqqmfoMSwiyW8ONTNY+YHQ8EOm67ZYB3gDngZ8WbfbTZ0yP3CB79CBbkmBwMrAG2GzRrmgWMNULRKa4VZYb+wC06Oc6y7bRcOmfYkGqgJwIGnPUHYHN2doBPSBZEfRGKiR+r4wFmaiheW/U4liQGb0UQlQmzz4HpDzNzoSRMBQ7IKkOz21riANS3MtBCrL1zo9y2k2F8k1z9kxVntMjQfVE09FnIQGPAzuBtqAG+oR84i7Rgts54Lpp5UO1QSsnolyNbE3VFXZoDdP3dmCeVg6DQoiKAvrxK1t7pD2gAUnARulnUxg3hCRLlQH9+Ob0SENAA1KmuRcAxgviQEAfRM0OyMsQRkxhbEOImhyQOyEN+cHE2u2OCEIyz0aniF2kSVBYyQw2HXibhB0bEKJbwBynRxqBRxaMunvGT7YgRBdxZYg1lgwngrEJIUP4Mh4gXyw14AdjEwItIrbiAmnTUMGWHJhSDYN2WYaQhaDDzhf3itUgrUMVWmywC/istVubkrr0NseeO0Rpif3TknIigGhyx2ResVatcwNlsKqceyMeiGgd8C5DOQ4CN90/+oFIqXM+8DV6v4x0RSeN/xQvjH+lYUarWVuRSWK3FTp5GIGgT/sKnXXSKdlIMBfo8PMhmcSqTivq9WkCOQIsTbQskWyGKDf+FKA6omK0l5qBBbpe4zmcYmWS6nZooWEa8CIKz1Xi9Eldjr6W7ElBcvbHuva9yPKax2/gtG7O2WS6Y8jGNqcy3R20MEBFv1MvTK2+Ak/3NvdriWQNXK6oBIzyGqirxNLzcsVleMoMKAnYR43rfGeipAX8BeQDttEuFafnAAAAAElFTkSuQmCC" class="user_icon" />
-                <p> 已下载次数 <span data-v-37be036a="" style="color: rgb(0, 157, 251);">7张</span></p>
+                <img  src="@/assets/img/downCard/down.png" class="user_icon" />
+                <p> 已下载次数 <span style="color: rgb(0, 157, 251);">{{userinfo.download_num}}张</span></p>
               </div>
             </div>
           </div>
@@ -37,131 +37,143 @@
           <p class="down_time">开通后可下载相应数量图片，有效期为365天</p>
 
           <div style="justify-content: space-between; width: 90%; display: flex; margin-top: 0.3rem;">
-            <div class="buy_card_box selected">
-              <p class="b_c_b_1">2张</p>
-              <p class="b_c_b_2"><span style="font-size: 0.4rem;">￥</span>9.9</p>
+            <div class="buy_card_box " :class="{'selected':cardNum === index}" v-for="(item,index) in vipRsp.list"
+                 :key="index" @click="chioceCard(index,item.id)">
+              <p class="b_c_b_1">{{item.download_num}}张</p>
+              <p class="b_c_b_2"><span style="font-size: 0.4rem;">￥</span>{{item.price}}</p>
               <del class="b_c_b_3">
-                ￥19.9
-              </del>
-              <p class="b_c_b_4">立省10元</p>
-            </div>
-            <div class="buy_card_box">
-              <p class="b_c_b_1">50张</p>
-              <p class="b_c_b_2"><span style="font-size: 0.4rem;">￥</span>189</p>
-              <del class="b_c_b_3">
-                ￥199
-              </del>
-              <p class="b_c_b_4">立省10元</p>
-            </div>
-            <div class="buy_card_box">
-              <p class="b_c_b_1">20张</p>
-              <p class="b_c_b_2"><span data-v-37be036a="" style="font-size: 0.4rem;">￥</span>99</p>
-              <del class="b_c_b_3">
-                ￥109
+                ￥{{item.price+10}}
               </del>
               <p class="b_c_b_4">立省10元</p>
             </div>
           </div>
 
-
-            <pay-mode :syncType.sync="payType"></pay-mode>
-            <div class="pay-btn" @click="payNow" v-show="vipType">立即支付</div>
-
-
-        <div class="head">
-          <div class="set-wrapper">
-            <span class="iconfont set-btn" @click="goSetting">&#xe61d;</span>
-          </div>
-          <div class="user-wrapper" v-if='userinfo.is_elme !== 1'>
-            <div class="user-wrapper-box">
-              <img class="avatar-img" v-lazy="userinfo.avatar" />
-              <div class="user-info">
-                <div>{{userinfo.nickname}}</div>
-              </div>
+<!--          <pay-mode :syncType.sync="payType"></pay-mode>-->
+        <div class="order_btn" style="width: 90%;">
+          <div class="pay-wrapper" style="text-align: center">
+            <div class="pay-wrapper-mode">
+              <span class="pay_span">支付方式</span>
             </div>
-            <span class="iconfont" @click="goResetPerson">&#xe65e;</span>
-          </div>
-        </div>
-        <div class="download-wrapper">
-          <div class="num-wrapper">
-                        <span>
-                            下载
-                            <b>{{userinfo.download_num}}张</b>
-                        </span>
-            <span>
-                            剩余下载次数
-                            <b>{{userinfo.free_download_num}}张</b>
-                        </span>
-          </div>
-          <van-tabs v-model="active" v-if="userinfo.is_elme!=1">
-            <van-tab>
-              <template #title>
-                <span class="iconfont" style="color:#1989fa;">&#xe60d;</span>
-                <span style="color:#1989fa;">我的下载</span>
-              </template>
-              <div class="my-download">
-                <van-grid :column-num="2" v-if="buyData.length>0">
-                  <img
-                    v-lazy="item.url"
-                    class="img-items"
-                    v-for="item in buyData"
-                    :key="item.id"
-                    @click="goDetail(item)"
-                  />
-                </van-grid>
-                <van-empty image="search" v-else>
-                  <div style="color:#fff;" slot="description">暂无数据</div>
-                </van-empty>
-              </div>
-            </van-tab>
-            <van-tab>
-              <template #title>
-                <span class="iconfont" style="color:#1989fa;">&#xe7b7;</span>
-                <span style="color:#1989fa;">下载卡</span>
-              </template>
-              <div class="vip-wrapper" :style='backStyle'>
-                <div class="vip-wrapper-buy">
-                  <span class="buy-title">购买下载卡</span>
-                  <span class="buy-tips">开通后有效期为365天</span>
+            <ul class="pay-wrapper-list">
+              <div  class="solid_border" style="width: 100%; margin-left: 0px; padding-bottom: 0px;"></div>
+              <li class="pay-wrapper-list-items" @click="payType=1" v-if="!isWeixin">
+                <div class="pay-wrapper-list-items-left">
+                  <img class="payment-icon" src="@/assets/img/membership/zfb.png" />
+                  <div class="payment-title">支付宝支付</div>
                 </div>
-                <ul class="vip-wrapper-list">
-                  <li
-                    v-for="item in vipRsp.list"
-                    :key="item.id"
-                    :class="{selected:vipType==item.id}"
-                    @click="vipType=item.id"
-                    class="vip-wrapper-list-items"
-                  >
-                    <span>{{item.num}}张</span>
-                    <div>￥{{item.price}}</div>
-                  </li>
-                </ul>
-              </div>
-              <pay-mode :syncType.sync="payType"></pay-mode>
-              <div class="pay-btn" @click="payNow" v-show="vipType">立即支付</div>
-            </van-tab>
-          </van-tabs>
-          <div v-else>
-            <div style="width:50%; display:flex; align-items:center; justify-content:center; margin-top:.266667rem; margin-bottom:.4rem;">
-              <span class="iconfont" style="color:#1989fa; margin-right:.133333rem;">&#xe60d;</span>
-              <span style="color:#1989fa;">我的下载</span>
-            </div>
-            <div class="my-download ele-download">
-              <van-grid :column-num="2" v-if="buyData.length>0">
-                <img
-                  v-lazy="item.url"
-                  class="img-items"
-                  v-for="item in buyData"
-                  :key="item.id"
-                  @click="goDetail(item)"
-                />
-              </van-grid>
-              <van-empty image="search" v-else>
-                <div style="color:#fff;" slot="description">暂无数据</div>
-              </van-empty>
-            </div>
+                <img class="payment-select" v-show="payType!=1" src="@/assets/img/mine/select.png" />
+                <img class="payment-select" v-show="payType==1" src="@/assets/img/mine/selected.png" />
+              </li>
+              <li class="pay-wrapper-list-items" @click="payType=2">
+                <div class="pay-wrapper-list-items-left">
+                  <img class="payment-icon" src="@/assets/img/membership/wx.png" />
+                  <div class="payment-title">微信支付</div>
+                </div>
+                <img class="payment-select" v-show="payType!=2" src="@/assets/img/mine/select.png" />
+                <img class="payment-select" v-show="payType==2" src="@/assets/img/mine/selected.png" />
+              </li>
+            </ul>
           </div>
+          <div class="pay-btn" @click="payNow">立即支付{{payPrice}}元</div>
+
+<!--            <div class="pay-btn" @click="payNow" v-show="vipType">立即支付</div>-->
         </div>
+
+<!--        <div class="head">-->
+<!--          <div class="set-wrapper">-->
+<!--            <span class="iconfont set-btn" @click="goSetting">&#xe61d;</span>-->
+<!--          </div>-->
+<!--          <div class="user-wrapper" v-if='userinfo.is_elme !== 1'>-->
+<!--            <div class="user-wrapper-box">-->
+<!--              <img class="avatar-img" v-lazy="userinfo.avatar" />-->
+<!--              <div class="user-info">-->
+<!--                <div>{{userinfo.nickname}}</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <span class="iconfont" @click="goResetPerson">&#xe65e;</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="download-wrapper">-->
+<!--          <div class="num-wrapper">-->
+<!--                        <span>-->
+<!--                            下载-->
+<!--                            <b>{{userinfo.download_num}}张</b>-->
+<!--                        </span>-->
+<!--            <span>-->
+<!--                            剩余下载次数-->
+<!--                            <b>{{userinfo.free_download_num}}张</b>-->
+<!--                        </span>-->
+<!--          </div>-->
+<!--          <van-tabs v-model="active" v-if="userinfo.is_elme!=1">-->
+<!--            <van-tab>-->
+<!--              <template #title>-->
+<!--                <span class="iconfont" style="color:#1989fa;">&#xe60d;</span>-->
+<!--                <span style="color:#1989fa;">我的下载</span>-->
+<!--              </template>-->
+<!--              <div class="my-download">-->
+<!--                <van-grid :column-num="2" v-if="buyData.length>0">-->
+<!--                  <img-->
+<!--                    v-lazy="item.url"-->
+<!--                    class="img-items"-->
+<!--                    v-for="item in buyData"-->
+<!--                    :key="item.id"-->
+<!--                    @click="goDetail(item)"-->
+<!--                  />-->
+<!--                </van-grid>-->
+<!--                <van-empty image="search" v-else>-->
+<!--                  <div style="color:#fff;" slot="description">暂无数据</div>-->
+<!--                </van-empty>-->
+<!--              </div>-->
+<!--            </van-tab>-->
+<!--            <van-tab>-->
+<!--              <template #title>-->
+<!--                <span class="iconfont" style="color:#1989fa;">&#xe7b7;</span>-->
+<!--                <span style="color:#1989fa;">下载卡</span>-->
+<!--              </template>-->
+<!--              <div class="vip-wrapper" :style='backStyle'>-->
+<!--                <div class="vip-wrapper-buy">-->
+<!--                  <span class="buy-title">购买下载卡</span>-->
+<!--                  <span class="buy-tips">开通后有效期为365天</span>-->
+<!--                </div>-->
+<!--                <ul class="vip-wrapper-list">-->
+<!--                  <li-->
+<!--                    v-for="item in vipRsp.list"-->
+<!--                    :key="item.id"-->
+<!--                    :class="{selected:vipType==item.id}"-->
+<!--                    @click="vipType=item.id"-->
+<!--                    class="vip-wrapper-list-items"-->
+<!--                  >-->
+<!--                    <span>{{item.num}}张</span>-->
+<!--                    <div>￥{{item.price}}</div>-->
+<!--                  </li>-->
+<!--                </ul>-->
+<!--              </div>-->
+<!--              <pay-mode :syncType.sync="payType"></pay-mode>-->
+<!--              <div class="pay-btn" @click="payNow" v-show="vipType">立即支付</div>-->
+<!--            </van-tab>-->
+<!--          </van-tabs>-->
+<!--          <div v-else>-->
+<!--            <div style="width:50%; display:flex; align-items:center; justify-content:center; margin-top:.266667rem; margin-bottom:.4rem;">-->
+<!--              <span class="iconfont" style="color:#1989fa; margin-right:.133333rem;">&#xe60d;</span>-->
+<!--              <span style="color:#1989fa;">我的下载</span>-->
+<!--            </div>-->
+<!--            <div class="my-download ele-download">-->
+<!--              <van-grid :column-num="2" v-if="buyData.length>0">-->
+<!--                <img-->
+<!--                  v-lazy="item.url"-->
+<!--                  class="img-items"-->
+<!--                  v-for="item in buyData"-->
+<!--                  :key="item.id"-->
+<!--                  @click="goDetail(item)"-->
+<!--                />-->
+<!--              </van-grid>-->
+<!--              <van-empty image="search" v-else>-->
+<!--                <div style="color:#fff;" slot="description">暂无数据</div>-->
+<!--              </van-empty>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
         </div>
       </div>
     </van-pull-refresh>
@@ -212,7 +224,10 @@ export default {
       vipRsp: {},
       payType: 1,
       vipType: "",
-      isLoading: false
+      isLoading: false,
+      cardNum:0,
+      payPrice:0,
+      isWeixin: ""
     };
   },
   computed: {
@@ -224,6 +239,10 @@ export default {
     goSetting() {
       //跳转设置页面
       this.$router.push({ path: "/setting" });
+    },
+    chioceCard(e,f){
+      this.cardNum = e
+      this.vipType = f
     },
     goDetail(e) {
       //跳转图片详情页面
@@ -267,6 +286,9 @@ export default {
         .then(res => {
           if (res.code === 1) {
             this.vipRsp = res.data;
+            this.payPrice = this.vipRsp.list[0].price
+            this.vipType = this.vipRsp.list[0].id
+            console.log(this.vipRsp,111)
           } else {
             this.$vux.toast.text(res.msg, "middle");
           }
@@ -356,6 +378,11 @@ export default {
     }
   },
   created() {
+
+    this.isWeixin = store.get("isWeiXin");
+    if (this.isWeixin) {
+      this.payType = 2;
+    }
     this.$nextTick(() => {
       this.userinfo = store.get("userinfo");
       this.getSeeMyBought();
@@ -538,4 +565,5 @@ export default {
     }
   }
 }
+
 </style>

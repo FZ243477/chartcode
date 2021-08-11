@@ -9,11 +9,11 @@
           <div class="nav_border"></div>
           <div class="nav_tabs">
             <div v-if="userinfo.is_elme === 0" class="nav_li">ID:{{userinfo.nickname}}</div>
-            <div class="nav_li">个人中心</div>
+            <div class="nav_li"  @click="goUserDetail">个人中心</div>
             <div v-if="userinfo.is_elme === 0" class="nav_li" @click="goDownCard">下载卡</div>
-            <div class="nav_li">下载记录 </div>
-            <div class="nav_li">我的收藏</div>
-            <div v-if="userinfo.is_elme === 0" class="nav_li">退出登录</div>
+            <div class="nav_li" @click="goMine">下载记录 </div>
+            <div class="nav_li" @click="goFavorite">我的收藏</div>
+            <div v-if="userinfo.is_elme === 0" class="nav_li" @click="logout">退出登录</div>
           </div>
           <div class="nav_footer">
             <a href="tel:0571-88693669" class="call_phone" style="width: 4rem;">
@@ -35,7 +35,7 @@
 </template>
 <script>
 import store from "store";
-import {userIndex} from "../http/api";
+import {userIndex,logOut} from "../http/api";
 
 export default{
   data(){
@@ -81,8 +81,33 @@ export default{
     goBack(){
       this.$router.go(-1);//返回上一层
     },
+    goMine(){
+      this.$router.push({ path: '/mine' })
+    },
+    goFavorite(){
+      this.$router.push({ path: '/favorite' })
+    },
     goDownCard(){
       this.$router.push({ path: '/downCard' })
+    },
+    goUserDetail(){
+      this.$router.push({ path: '/userDetail' })
+    },
+    logout(){ //退出登录
+      let params={
+        token:store.get("userinfo").token
+      }
+      logOut(params).then(res=>{
+        if(res.code==1){
+          this.$vux.toast.text('退出登录成功', 'middle')
+          store.remove("userinfo")
+          window.setTimeout(()=>{
+            this.$router.replace({path:'/login'})
+          },500)
+        }else{
+          this.$vux.toast.text(res.msg, 'middle')
+        }
+      })
     },
     GetUrlParam(paraName) {
       var url = document.location.toString();

@@ -1298,3 +1298,10 @@
   z-index: 99999999999;
   width: 1rem;
 }
+.pay-wrapper-list-items .payment-select{
+  width: .4rem;
+  height: .4rem;
+}
+.order_btn{
+  margin-top: .6rem;
+}

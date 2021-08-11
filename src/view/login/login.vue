@@ -77,7 +77,7 @@ export default {
                     this.$vux.toast.text('登录成功', 'middle')
                     store.set("userinfo",res.data.userinfo)
                     window.setTimeout(()=>{
-                        this.$router.replace({path:'/classify'})
+                        this.$router.replace({path:'/home'})
                     },500)
                 }else{
                     this.$vux.toast.text(res.msg, 'middle')

@@ -9,11 +9,11 @@
             <div class="nav_border"></div>
             <div class="nav_tabs">
               <div v-if="userinfo.is_elme === 0" class="nav_li">ID:{{userinfo.nickname}}</div>
-              <div class="nav_li">个人中心</div>
+              <div class="nav_li" @click="goUserDetail">个人中心</div>
               <div v-if="userinfo.is_elme === 0" class="nav_li" @click="goDownCard">下载卡</div>
-              <div class="nav_li">下载记录 </div>
-              <div class="nav_li">我的收藏</div>
-              <div v-if="userinfo.is_elme === 0" class="nav_li">退出登录</div>
+              <div class="nav_li" @click="goMine">下载记录 </div>
+              <div class="nav_li" @click="goFavorite">我的收藏</div>
+              <div v-if="userinfo.is_elme === 0" class="nav_li" @click="logout">退出登录</div>
             </div>
             <div class="nav_footer">
               <a :href="'tel:'+messageContent.phone" class="call_phone" style="width: 4rem;">
@@ -146,7 +146,7 @@
     import {Search, Swipe, SwipeItem, NavBar, Toast, Dialog} from 'vant';
     import store from "store";
     import { Swiper, SwiperItem,Loading } from "vux";
-    import { index, loadMore, userIndex, newIndex } from "../../http/api.js";
+    import {index, loadMore, userIndex, newIndex, logOut} from "../../http/api.js";
     export default {
         components: {
             Swiper,
@@ -311,6 +311,31 @@
           },
           goClassify(e){
             this.$router.push({ path: '/classify', query: { id: e } })
+          },
+          goMine(){
+            this.$router.push({ path: '/mine' })
+          },
+          goFavorite(){
+            this.$router.push({ path: '/favorite' })
+          },
+          goUserDetail(){
+            this.$router.push({ path: '/userDetail' })
+          },
+          logout(){ //退出登录
+            let params={
+              token:store.get("userinfo").token
+            }
+            logOut(params).then(res=>{
+              if(res.code==1){
+                this.$vux.toast.text('退出登录成功', 'middle')
+                store.remove("userinfo")
+                window.setTimeout(()=>{
+                  this.$router.replace({path:'/login'})
+                },500)
+              }else{
+                this.$vux.toast.text(res.msg, 'middle')
+              }
+            })
           },
             // 获取新首页数据
             getData() {

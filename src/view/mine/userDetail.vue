@@ -3,18 +3,25 @@
     <Header></Header>
     <div class="list">
       <div class="list-item_logo">
-        <input id="inputFile" type="file" hidden="hidden" />
-        <img src="https://image.shitutu.com/uploads/20210806/ef15dd5d45e16b070dbfd28a981dae5e.png" class="reset-item-head user_detail_logo" />
-        <div class="user_detail_logo_text">
-          更换头像
-        </div>
+        <input id="inputFile" type="file" hidden="hidden" @change="uploadChange"/>
+        <img :src="userinfo.avatar" class="reset-item-head user_detail_logo" @click="uploadClick"/>
+        <div class="user_detail_logo_text">更换头像</div>
       </div>
+<!--      <div class="reset-item">-->
+<!--        <div class="reset-item-title">修改头像</div>-->
+<!--        <div class="right-box">-->
+<!--          <img class="reset-item-head" :src="userinfo.avatar">-->
+<!--          <input id="inputFile" type="file" hidden @change="uploadChange">-->
+<!--          <img class="reset-item-more" src="@/assets/img/home/right.png" @click="uploadClick">-->
+<!--        </div>-->
+<!--      </div>-->
+
       <div class="list-item">
-        <div >
-          性别
-        </div>
+        <div>性别</div>
         <div class="user_select_div">
-          <select id="sex" class="user_detail_select"><option value="1">男</option><option value="2">女</option></select>
+          <select id="sex" class="user_detail_select" v-model="sexSelected" @change="getSexSelected">
+            <option v-for="(item,index) in sex"   :key="index" :value="item.value">{{item.name}}</option>
+          </select>
         </div>
         <img src="@/assets/img/home/right2.png" />
       </div>
@@ -22,9 +29,7 @@
 
 
       <div class="list-item" @click="bindShow">
-        <div >
-          地区
-        </div>
+        <div>地区</div>
           <div class="area_area">
             <div class="area_area_text" > {{valueArea}}</div>
             <!--选择省市区-->
@@ -43,12 +48,10 @@
       </van-popup>
 
       <div  class="list-item">
-        <div >类型</div>
+        <div>类型</div>
         <div  class="user_select_div">
-          <select  id="cate_type" class="user_detail_select">
-            <option value="1">外卖</option>
-            <option value="2">堂食</option>
-            <option value="3">都有</option>
+          <select  id="cate_type" class="user_detail_select" v-model="cateTypeSelected" @change="getCateTypeSelected">
+            <option v-for="(item,index) in cateType"  :key="index" :value="item.value">{{item.name}}</option>
           </select>
         </div>
         <img src="@/assets/img/home/right2.png" />
@@ -79,49 +82,20 @@
        </div>
 
       <div class="list-item">
-        <div>
-          细分行业
-        </div>
+        <div>细分行业</div>
         <div class="user_select_div">
-          <select id="industry" class="user_detail_select">
-            <option value="4">饺子馄饨</option>
-            <option value="5">快餐便当</option>
-            <option value="6">汉堡薯条</option>
-            <option value="7">意面披萨</option>
-            <option value="8">包子粥铺</option>
-            <option value="9">米粉面馆</option>
-            <option value="10">麻辣烫冒菜</option>
-            <option value="11">川湘菜</option>
-            <option value="12">东北菜</option>
-            <option value="13">西北菜</option>
-            <option value="14">江浙菜</option>
-            <option value="15">地方菜系</option>
-            <option value="16">炸鸡炸串</option>
-            <option value="17">特色小吃</option>
-            <option value="18">精致西餐</option>
-            <option value="19">夹馍饼类</option>
-            <option value="20">鸭脖卤味</option>
-            <option value="21">日料寿司</option>
-            <option value="22">韩式料理</option>
-            <option value="23">香锅干锅</option>
-            <option value="24">火锅串串</option>
-            <option value="25">龙虾烧烤</option>
-            <option value="26">轻食沙拉</option>
+          <select id="industry" class="user_detail_select" v-model="industrySelected" @change="getIndustrySelected">
+            <option v-for="(item,index) in industry"  :key="index" :value="item.value">{{item.name}}</option>
           </select>
         </div>
         <img src="@/assets/img/home/right2.png"/>
       </div>
 
       <div class="list-item">
-        <div >
-          图片更新频率
-        </div>
+        <div>图片更新频率</div>
         <div class="user_select_div">
-          <select id="frequency" class="user_detail_select">
-            <option value="4">每月更新</option>
-            <option value="5">每季更新</option>
-            <option value="6">半年更新</option>
-            <option value="7">每年更新</option>
+          <select id="frequency" class="user_detail_select" v-model="frequencySelected" @change="getFrequencySelected">
+            <option v-for="(item,index) in frequency"  :key="index" :value="item.value">{{item.name}}</option>
           </select>
         </div>
         <img src="@/assets/img/home/right2.png"/>
@@ -140,10 +114,11 @@
 <script>
 import Header from '@/components/Header.vue'
 import store from "store";
-import { index, loadMore, userIndex, seeMyCollection, collection,delCollection } from "../../http/api.js";
+import { index, loadMore, userIndex, seeMyCollection, collection,delCollection,upload,profile } from "../../http/api.js";
 import areaList from '../../assets/js/area.js'
 import { XHeader, Tab, TabItem, Scroller, LoadMore, Swiper, SwiperItem } from "vux";
 import { NavBar, Grid, GridItem, Checkbox, CheckboxGroup, Toast, Empty } from "vant";
+import $ from "jquery";
 export default {
   components: {
     Swiper,
@@ -176,6 +151,50 @@ export default {
       arrArea: [], //存放地区数组
       clientHeight: '',
       pingpai:'',
+      sexSelected:'',
+      cateTypeSelected:'',
+      industrySelected:'',
+      frequencySelected:'',
+      sex:[
+        {value:1,name:'男'},
+        {value:2,name:'女'},
+      ],
+      cateType:[
+        {value:1,name:'外卖'},
+        {value:2,name:'堂食'},
+        {value:3,name:'都有'},
+      ],
+      industry:[
+        {value:4,name:'饺子馄饨'},
+        {value:5,name:'快餐便当'},
+        {value:6,name:'汉堡薯条'},
+        {value:7,name:'意面披萨'},
+        {value:8,name:'包子粥铺'},
+        {value:9,name:'米粉面馆'},
+        {value:10,name:'麻辣烫冒菜'},
+        {value:11,name:'川湘菜'},
+        {value:12,name:'东北菜'},
+        {value:13,name:'西北菜'},
+        {value:14,name:'江浙菜'},
+        {value:15,name:'地方菜系'},
+        {value:16,name:'炸鸡炸串'},
+        {value:17,name:'特色小吃'},
+        {value:18,name:'精致西餐'},
+        {value:19,name:'夹馍饼类'},
+        {value:20,name:'鸭脖卤味'},
+        {value:21,name:'日料寿司'},
+        {value:22,name:'韩式料理'},
+        {value:23,name:'香锅干锅'},
+        {value:24,name:'火锅串串'},
+        {value:25,name:'龙虾烧烤'},
+        {value:26,name:'轻食沙拉'},
+      ],
+      frequency:[
+        {value:4,name:'每月更新'},
+        {value:5,name:'每季更新'},
+        {value:6,name:'半年更新'},
+        {value:7,name:'每年更新'},
+      ],
     };
   },
   mounted() {
@@ -205,10 +224,67 @@ export default {
       this.$refs.homePage.style.height = clientHeight + 'px';
       console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
     },
-    surePingpai(){
-
+    getSexSelected(){
+      //获取选中的优惠券
+      console.log(this.sexSelected)
     },
+    getCateTypeSelected(){
+      //获取选中的优惠券
+      console.log(this.cateTypeSelected)
+    },
+    getIndustrySelected(){
+      //获取选中的优惠券
+      console.log(this.industrySelected)
+    },
+    getFrequencySelected(){
+      //获取选中的优惠券
+      console.log(this.frequencySelected)
+    },
+    uploadClick() {
+      $("#inputFile").click();
+    },
+    uploadChange(fileList) {
+      let that=this;
+      let files = fileList.target.files;
+      if (files.length > 0) {
+        var formData = new FormData();
+        formData.append("file", files[0]);
+        formData.append("token", that.userinfo.token);
+        $.ajax({
+          type: "POST",
+          url: "https://admin.shitutu.com/public/api/common/upload",
+          data: formData,
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function(res) {
+            console.log(res,2222);
+            document.getElementById("inputFile").value = "";
+            if (res.code.code === 1) {
+              profile({
+                token:that.userinfo.token,
+                avatar:res.code.url
+              }).then(ress=>{
+                if(res.code.code === 1){
+                  that.$vux.toast.text("修改成功", "middle");
+                  that.userinfo.avatar=res.code.url;
+                  store.set("userinfo",that.userinfo);
+                  //   store.remove("userinfo");
+                  //   window.setTimeout(() => {
+                  //     that.$router.replace({ path: "/login" });
+                  //   }, 500);
+                }else{
+                  that.$vux.toast.text(ress.msg, "middle");
+                }
+              })
 
+            } else {
+              that.$vux.toast.text(res.msg, "middle");
+            }
+          }
+        });
+      }
+    },
     bindShow(){
       this.showArea= true;
     },

@@ -63,14 +63,16 @@ export default {
             success: function(res) {
                 console.log(res);
                 document.getElementById("inputFile").value = "";
-                if (res.code == 1) {
+                if (res.code.code === 1) {
+                  console.log(21312)
                     profile({
                         token:that.userinfo.token,
-                        avatar:res.data.url
+                        avatar:res.code.url
                     }).then(ress=>{
                         if(ress.code==1){
                             that.$vux.toast.text("修改成功", "middle");
-                            that.userinfo.avatar=res.data.show_url;
+                            console.log(ress)
+                            that.userinfo.avatar=res.code.url;
                             store.set("userinfo",that.userinfo);
                             //   store.remove("userinfo");
                             //   window.setTimeout(() => {
@@ -80,7 +82,7 @@ export default {
                             that.$vux.toast.text(ress.msg, "middle");
                         }
                     })
-                
+
                 } else {
                   that.$vux.toast.text(res.msg, "middle");
                 }
