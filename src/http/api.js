@@ -18,8 +18,10 @@ export const seeClassifyDetail = params => post('/api/index/seeClassifyDetail',p
 export const classifyBrowse = params => post('/api/index/classifyBrowse',params);  //分类列表
 export const index = params => post('/api/index/index',params);  //首页
 export const upload = params => post('/api/common/upload',params); //上传图片
-export const collection = params => post('/api/index/collection',params) //收藏图片/取消收藏
-export const seeImageDetail = params => post('/api/index/seeImageDetail',params) //查看图片详情
+export const collection = params => post('/api/index/collection',params); //收藏图片/取消收藏
+export const seeImageDetail = params => post('/api/index/seeImageDetail',params); //查看图片详情
+export const saveUserDetail = params => post('/api/report/saveUserDetail',params); //储存个人资料
+export const DetailMessage = params => post('/api/report/DetailMessage',params); //储存个人资料
 
 // User
 export const useRedeemCode = params => post('/api/user/useRedeemCode',params);   //使用兑换码

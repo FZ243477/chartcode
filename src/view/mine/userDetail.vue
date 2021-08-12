@@ -59,9 +59,11 @@
 
       <div onclick="event.cancelBubble = true" class="list-item">
         <div>品牌</div>
-        <div class="area_area">
-          <div class="area_area_text"></div>
-          <div onclick="event.cancelBubble = true" id="dis_requ_none" class="requirements_shadow" style="z-index: 1;" ref="homePage">
+        <div class="area_area" @click="writePinpai">
+          <div class="area_area_text">{{pingpaiValue}}</div>
+          <div onclick="event.cancelBubble = true" :class="{'display_show':writeShow === true,'display_none':writeShow === false}"
+               class="requirements_shadow " @click="closePinpai"
+               style="z-index: 1;" ref="homePage" >
             <div onclick="event.cancelBubble = true" class="brand_alert">
               <div class="van-cell-group van-hairline--top-bottom" style="margin-top: 0.45rem;">
                 <div class="input_textarea van-cell van-field van-field--min-height">
@@ -102,7 +104,7 @@
       </div>
 
       <div style="height: 3rem;">
-        <div class="confirm-btn" style="margin: 1rem auto 0px;">
+        <div class="confirm-btn" @click="saveMessage" style="margin: 1rem auto 0px;">
           保存
         </div>
       </div>
@@ -114,7 +116,7 @@
 <script>
 import Header from '@/components/Header.vue'
 import store from "store";
-import { index, loadMore, userIndex, seeMyCollection, collection,delCollection,upload,profile } from "../../http/api.js";
+import { index, loadMore, userIndex, seeMyCollection, collection,delCollection,upload,profile,saveUserDetail,DetailMessage } from "../../http/api.js";
 import areaList from '../../assets/js/area.js'
 import { XHeader, Tab, TabItem, Scroller, LoadMore, Swiper, SwiperItem } from "vux";
 import { NavBar, Grid, GridItem, Checkbox, CheckboxGroup, Toast, Empty } from "vant";
@@ -151,6 +153,7 @@ export default {
       arrArea: [], //存放地区数组
       clientHeight: '',
       pingpai:'',
+      pingpaiValue:'',
       sexSelected:'',
       cateTypeSelected:'',
       industrySelected:'',
@@ -195,6 +198,7 @@ export default {
         {value:6,name:'半年更新'},
         {value:7,name:'每年更新'},
       ],
+      writeShow:false
     };
   },
   mounted() {
@@ -223,6 +227,41 @@ export default {
       console.log(clientHeight);
       this.$refs.homePage.style.height = clientHeight + 'px';
       console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
+    },
+    saveMessage(){
+      console.log(this.userinfo.id,88889)
+      saveUserDetail({
+        user_id:this.userinfo.id,
+        user_name:this.userinfo.nickname,
+        address:this.valueArea,
+        sex_id:this.sexSelected,
+        cate_type:this.cateTypeSelected,
+        brand:this.pingpaiValue,
+        industry:this.industrySelected,
+        frequency:this.frequencySelected
+      }).then(res=>{
+        if (res.code == 1) {
+
+        } else {
+          Toast(res.msg);
+        }
+      })
+    },
+    writePinpai(){
+      if(this.writeShow === false){
+        this.writeShow = true
+      }
+    },
+    closePinpai(){
+      if(this.writeShow === true ){
+        this.writeShow = false
+      }
+    },
+    surePingpai(){
+      this.pingpaiValue = this.pingpai
+      if(this.writeShow === true ){
+        this.writeShow = false
+      }
     },
     getSexSelected(){
       //获取选中的优惠券
@@ -258,7 +297,6 @@ export default {
           contentType: false,
           processData: false,
           success: function(res) {
-            console.log(res,2222);
             document.getElementById("inputFile").value = "";
             if (res.code.code === 1) {
               profile({
@@ -295,7 +333,7 @@ export default {
     onAreaConfirm(val) {
       this.showArea = false;
       this.arrArea = val;
-      var addrInfo = val[0].name + '-' + val[1].name + '-' + val[2].name;
+      var addrInfo = val[0].name + '/' + val[1].name + '/' + val[2].name;
       this.valueArea = addrInfo
     },
 
@@ -371,10 +409,16 @@ export default {
       this.isEdit = !this.isEdit;
     },
     getData() {
-      index().then(res => {
-        console.log(res);
-        if (res.code == 1) {
-          this.responseData = res.data;
+      DetailMessage({
+        user_id:this.userinfo.id
+      }).then(res => {
+        if (res.code === 1 && res.data.edit_type === 1) {
+          this.sexSelected = res.data.sex_id;
+          this.cateTypeSelected = res.data.cate_type;
+          this.industrySelected = res.data.industry;
+          this.frequencySelected = res.data.frequency;
+          this.valueArea = res.data.address;
+          this.pingpaiValue = res.data.brand;
         } else {
           this.$vux.toast.text(res.msg, "middle");
         }
@@ -515,8 +559,12 @@ export default {
         });
       }
     }
-    // this.getData();
+     this.getData();
     this.getCollect();
+    this.sexSelected = this.sex[0].value;
+    this.cateTypeSelected = this.cateType[0].value;
+    this.industrySelected = this.industry[0].value;
+    this.frequencySelected = this.frequency[0].value;
   }
 };
 </script>

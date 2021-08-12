@@ -121,6 +121,9 @@
 .display_show {
   display: block!important;
 }
+.display_none{
+  display: none!important;
+}
 .tab_index {
   background-color: #fff;
   bottom: 1.57rem;
