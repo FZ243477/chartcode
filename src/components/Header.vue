@@ -9,14 +9,14 @@
           <div class="nav_border"></div>
           <div class="nav_tabs">
             <div v-if="userinfo.is_elme === 0" class="nav_li">ID:{{userinfo.nickname}}</div>
-            <div class="nav_li"  @click="goUserDetail">个人中心</div>
+            <div class="nav_li"  @click="goSetting">个人中心</div>
             <div v-if="userinfo.is_elme === 0" class="nav_li" @click="goDownCard">下载卡</div>
             <div class="nav_li" @click="goMine">下载记录 </div>
             <div class="nav_li" @click="goFavorite">我的收藏</div>
             <div v-if="userinfo.is_elme === 0" class="nav_li" @click="logout">退出登录</div>
           </div>
           <div class="nav_footer">
-            <a href="tel:0571-88693669" class="call_phone" style="width: 4rem;">
+            <a :href="'tel:'+messageContent.phone" class="call_phone" style="width: 4rem;">
               <img src="@/assets/img/home/phone.png" class="call_phone_img" /> 点击联系我们 </a>
           </div>
         </div>
@@ -35,7 +35,7 @@
 </template>
 <script>
 import store from "store";
-import {userIndex,logOut} from "../http/api";
+import {userIndex,logOut,newIndex} from "../http/api";
 
 export default{
   data(){
@@ -43,6 +43,7 @@ export default{
       userinfo: {},
       clientHeight: '',
       navShow:false,
+      messageContent:'',
     }
   },
   mounted() {
@@ -90,6 +91,9 @@ export default{
     goDownCard(){
       this.$router.push({ path: '/downCard' })
     },
+    goSetting(){
+      this.$router.push({ path: '/setting' })
+    },
     goUserDetail(){
       this.$router.push({ path: '/userDetail' })
     },
@@ -126,6 +130,15 @@ export default{
       else {
         return "";
       }
+    },
+    getData(){
+      newIndex().then(res => {
+        if (res.code === 1) {
+          this.messageContent = res.data.messageContent
+        } else {
+          this.$vux.toast.text(res.msg, "middle");
+        }
+      })
     }
   },
   created(){
@@ -173,6 +186,7 @@ export default{
         })
       }
     }
+    this.getData();
   },
 
 }

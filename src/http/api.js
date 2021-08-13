@@ -22,6 +22,7 @@ export const collection = params => post('/api/index/collection',params); //收�
 export const seeImageDetail = params => post('/api/index/seeImageDetail',params); //查看图片详情
 export const saveUserDetail = params => post('/api/report/saveUserDetail',params); //储存个人资料
 export const DetailMessage = params => post('/api/report/DetailMessage',params); //储存个人资料
+export const reportSave = params => post('/api/report/save',params); //举报
 
 // User
 export const useRedeemCode = params => post('/api/user/useRedeemCode',params);   //使用兑换码

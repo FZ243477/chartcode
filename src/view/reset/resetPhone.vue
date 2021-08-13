@@ -6,15 +6,16 @@
         <div class="line"></div>
         <div class="r_p_box">
           新手机号码：
-          <input type="text" placeholder="请输入手机号" />
+          <input type="text" v-model="mobile" placeholder="请输入手机号" />
         </div>
         <div class="line"></div>
         <div class="code-box">
           <span >验证码：</span>
-          <input type="text" placeholder="请输入验证码" class="code-input" />
-          <div class="send-code">
-            获取验证码
-          </div>
+          <input type="text" v-model="captcha" placeholder="请输入验证码" class="code-input" />
+<!--          <div class="send-code">-->
+<!--            获取验证码-->
+<!--          </div>-->
+          <div class="send-code" @click="sms_send" :class="{gray:timer==0}">{{codeTips}}</div>
         </div>
       </div>
 

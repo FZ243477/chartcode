@@ -14,6 +14,23 @@
                 </div>
             </template>
             <div class="content">
+              <div class="down_card_message"  v-if="userinfo.is_elme === 1">
+                <div class="use_m_l">
+                  <p >
+                    <img src="@/assets/img/downCard/free.png"   class="user_icon" />
+                    <span >剩余下载次数 </span>
+                    <span style="color: rgb(0, 157, 251);">{{userinfo.free_download_num}}张</span>
+                  </p>
+
+                </div>
+                <div class="use_m_r">
+                  <p >
+                    <img src="@/assets/img/downCard/down.png" style="width: 0.55rem" class="user_icon">
+                    <span >已下载次数</span>
+                    <span  style="color: rgb(0, 157, 251);">{{userinfo.download_num}}张</span>
+                  </p>
+                </div>
+              </div>
               <div class="mine_title">
                 <p class="title_down_p_l">下载记录</p>
                 <p class="title_down_p_r">清空记录</p>
@@ -45,11 +62,11 @@
 <!--                            <b>{{userinfo.free_download_num}}张</b>-->
 <!--                        </span>-->
 <!--                    </div>-->
-                  <div class="my-download ele-download">
+                  <div class="my-download ele-download" style="width: 90%;">
                     <van-grid :column-num="2" v-if="buyData.length>0">
                       <div  class="down_box"  v-for="item in buyData"
                             :key="item.id"
-                            @click="goDetail(item)">
+                            @click="goDetail(item.id)">
                         <img  class="img-items"   v-lazy="item.url" lazy="loaded" />
                         <div class="down_box_right">
                           <p >图片ID：{{ item.uuid }}</p>
@@ -204,7 +221,7 @@ export default {
         },
         goDetail(e) {
             //跳转图片详情页面
-            this.$router.push({ path: "/activityDetail", query: { id: e.id } });
+            this.$router.push({ path: "/activityDetail", query: { id: e } });
         },
         goResetPerson() {
             //跳转个人资料设置页面
@@ -527,5 +544,43 @@ export default {
             }
         }
     }
+}
+.use_m_l{
+  display: -ms-flexbox;
+  display: flex;
+  float: left;
+  width: 50%;
+  height: auto;
+  line-height: .2rem;
+  padding: .4rem 0;
+  margin: 0;
+}
+.use_m_l p{
+  color: #292b32;
+  width: 80%;
+  font-size: .35rem;
+  font-family: 微软雅黑;
+  font-weight: 400;
+  line-height: .6rem;
+  padding-left: .6rem;
+}
+.use_m_r{
+  display: -ms-flexbox;
+  display: flex;
+  float: right;
+  width: 50%;
+  height: auto;
+  padding: .4rem 0;
+  line-height: .2rem;
+  margin: 0;
+}
+.use_m_r p {
+  color: #292b32;
+  width: 80%;
+  font-size: .35rem;
+  font-family: 微软雅黑;
+  font-weight: 400;
+  line-height: .6rem;
+  padding-left: .6rem;
 }
 </style>

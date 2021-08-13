@@ -140,18 +140,18 @@
 
         </div>
         <div class="control-box">
-            <div
-                class="open-vip"
-                @click="goMembership"
-                v-if="userinfo.is_vip==0 && userinfo.is_elme!=1"
-            >开通会员</div>
-            <div class="open-vip" v-if="userinfo.is_vip!=0 || userinfo.is_elme==1"></div>
-            <div class="btn-right" v-if="!goodsDetail.isBuy || userinfo.is_elme==1">
-                <div class="add-car" @click="addShopCar" v-show="!goodsDetail.isCollection">收藏</div>
-                <div class="add-car" @click="addShopCar" v-show="goodsDetail.isCollection">已收藏</div>
-                <div class="buy-now" @click="goPayment" v-if="userinfo.is_elme==0">立即下载</div>
-                <div class="buy-now" @click="downLoad" v-if="userinfo.is_elme==1">无水印下载</div>
-            </div>
+<!--            <div-->
+<!--                class="open-vip"-->
+<!--                @click="goMembership"-->
+<!--                v-if="userinfo.is_vip==0 && userinfo.is_elme!=1"-->
+<!--            >开通会员</div>-->
+<!--            <div class="open-vip" v-if="userinfo.is_vip!=0 || userinfo.is_elme==1"></div>-->
+<!--            <div class="btn-right" v-if="!goodsDetail.isBuy || userinfo.is_elme==1">-->
+<!--                <div class="add-car" @click="addShopCar" v-show="!goodsDetail.isCollection">收藏</div>-->
+<!--                <div class="add-car" @click="addShopCar" v-show="goodsDetail.isCollection">已收藏</div>-->
+<!--                <div class="buy-now" @click="goPayment" v-if="userinfo.is_elme==0">立即下载</div>-->
+<!--                <div class="buy-now" @click="downLoad" v-if="userinfo.is_elme==1">无水印下载</div>-->
+<!--            </div>-->
 <!--            <div-->
 <!--                class="btn-dowload"-->
 <!--                v-if="goodsDetail.isBuy && userinfo.is_elme==0"-->
@@ -165,24 +165,42 @@
             举报
           </div>
           <ul class="box">
-            <li class="">图片损坏</li>
-            <li class="">图片模糊</li>
-            <li class="">侵权/盗版</li>
-            <li class="">图片重复</li>
-            <li class="">下载失败</li>
-            <li class="">色情低俗</li>
-            <li class="">其他原因</li>
+            <li   :class="{'checked':item.bOn === true}" v-for="(item,index) in reportList"  :key="index" @click="selectReport(index)" >{{item.title}}</li>
+<!--            <li class="">图片模糊</li>-->
+<!--            <li class="">侵权/盗版</li>-->
+<!--            <li class="">图片重复</li>-->
+<!--            <li class="">下载失败</li>-->
+<!--            <li class="">色情低俗</li>-->
+<!--            <li class="">其他原因</li>-->
           </ul>
           <div class="van-cell-group van-hairline--top-bottom">
             <div class="input_textarea van-cell van-field van-field--min-height">
               <div class="van-cell__value van-cell__value--alone van-field__value">
                 <div class="van-field__body">
-                  <textarea placeholder="请输入举报内容" class="van-field__control"></textarea>
+                  <textarea placeholder="请输入举报内容" v-model="message" class="van-field__control"></textarea>
                 </div>
               </div>
             </div>
           </div>
-          <a data-v-5208b837="" href="#" class="down_img" style="margin-top: 0.6rem;">提交</a>
+          <a  href="#" class="down_img" style="margin-top: 0.6rem;" @click="goReportSave">提交</a>
+        </div>
+      </div>
+
+      <div class="down_card_message"  v-if="userinfo.is_elme === 1">
+        <div class="use_m_l">
+          <p >
+            <img src="@/assets/img/downCard/free.png"   class="user_icon" />
+            <span >剩余下载次数 </span>
+            <span style="color: rgb(0, 157, 251);">{{userinfo.free_download_num}}张</span>
+          </p>
+
+        </div>
+        <div class="use_m_r">
+          <p >
+            <img src="@/assets/img/downCard/down.png" style="width: 0.55rem" class="user_icon">
+            <span >已下载次数</span>
+            <span  style="color: rgb(0, 157, 251);">{{userinfo.download_num}}张</span>
+          </p>
         </div>
       </div>
 
@@ -192,7 +210,7 @@
 <script>
 import Header from '@/components/Header.vue'
 import store from "store";
-import { NavBar } from 'vant';
+import { NavBar,Toast } from 'vant';
 import {
     XHeader,
     XButton,
@@ -206,7 +224,8 @@ import {
     seeImageDetail,
     collection,
     download,
-    download2
+    download2,
+  reportSave
 } from "../../http/api.js";
 export default {
     directives: {
@@ -220,7 +239,8 @@ export default {
         SwiperItem,
         Alert,
         XDialog,
-        Header
+        Header,
+      Toast
     },
     data() {
         return {
@@ -234,7 +254,18 @@ export default {
           imgWidth:0,
           imgHeight:0,
           clientHeight: '',
-          dis_requ_show:'dis_requ_none'
+          dis_requ_show:'dis_requ_none',
+          reportList:[
+            {id:1,title:'图片损坏',bOn:false},
+            {id:2,title:'图片模糊',bOn:false},
+            {id:3,title:'侵权/盗版',bOn:false},
+            {id:4,title:'图片重复',bOn:false},
+            {id:5,title:'下载失败',bOn:false},
+            {id:6,title:'色情低俗',bOn:false},
+            {id:7,title:'其他原因',bOn:false},
+          ],
+          arr:[],
+          message:''
         };
     },
   mounted() {
@@ -271,6 +302,9 @@ export default {
         console.log(clientHeight);
         this.$refs.homePage.style.height = clientHeight + 'px';
         console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
+      },
+      selectReport(e){
+        this.reportList[e].bOn = true
       },
       getImgInfo () {
 
@@ -320,6 +354,29 @@ export default {
         }else{
           this.dis_requ_show = 'dis_requ_none'
         }
+      },
+      goReportSave(){
+
+        for (var i=0,len=this.reportList.length; i<len; i++)
+        {
+          if(this.reportList[i].bOn === true){
+            this.arr.push(this.reportList[i]);
+          }
+        }
+
+        reportSave({
+          report_cate: JSON.stringify(this.arr),
+          user_id: this.userinfo.id,
+          user_name:this.userinfo.nickname,
+          message:this.message,
+        }).then(res => {
+          if (res.code === 1) {
+            this.$vux.toast.text(res.msg, "middle");
+            this.dis_requ_show = 'dis_requ_none'
+          } else {
+            this.$vux.toast.text(res.msg, "middle");
+          }
+        });
       },
         addShopCar() {
             //添加收藏
@@ -440,6 +497,9 @@ li {
   cursor: pointer;
   margin-left: 5px;
 }
+li.checked{
+  color: #009dfb;
+}
 li:before {
   display: inline-block;
   width: 10px;
@@ -449,5 +509,9 @@ li:before {
   border: 1px solid #333;
   margin-right: .11rem;
   transition: all .3s linear;
+}
+li.checked:before {
+  background-color: #009dfb;
+  border: 1px solid #009dfb;
 }
 </style>

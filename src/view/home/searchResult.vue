@@ -20,8 +20,9 @@
 <!--        <div>{{params.keyword}}</div>-->
 <!--      </div>-->
 <!--    </div>-->
+
     <keep-alive>
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" style="padding-top: 0.4rem;">
+        <van-list v-model="loading"  :finished="finished" finished-text="没有更多了" @load="onLoad" style="padding-top: 0.4rem;">
         <van-grid :column-num="2" style="
     column-count: 2;
     column-gap: 0.13rem;
@@ -42,7 +43,6 @@
         </van-grid>
         </van-list>
     </keep-alive>
-
    <img v-if="btnFlag" src="@/assets/img/home/backTop.png" alt="" class="gotop " style="" @click="backTop">
    </div>
 </template>

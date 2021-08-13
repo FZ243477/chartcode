@@ -9,7 +9,7 @@
             <div class="nav_border"></div>
             <div class="nav_tabs">
               <div v-if="userinfo.is_elme === 0" class="nav_li">ID:{{userinfo.nickname}}</div>
-              <div class="nav_li" @click="goUserDetail">个人中心</div>
+              <div class="nav_li" @click="goSetting">个人中心</div>
               <div v-if="userinfo.is_elme === 0" class="nav_li" @click="goDownCard">下载卡</div>
               <div class="nav_li" @click="goMine">下载记录 </div>
               <div class="nav_li" @click="goFavorite">我的收藏</div>
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="head_top">
-          <img src="@/assets/img/home/1.png" class="top_img1 left_slide_center_nav" />
+          <img src="@/assets/img/home/1.png" class="top_img1 left_slide_center_nav" @click="showGoUserDetail"/>
           <img src="@/assets/img/home/logo.2e38c60.png" class="top_img2" />
           <img src="@/assets/img/home/header.png" class="top_img3"  @click="goNav"/>
           <div style="clear: both;"></div>
@@ -137,6 +137,15 @@
       </div>
       <div v-if="userinfo.is_elme === 1" style="height: 2rem;"></div>
 
+      <div onclick="event.cancelBubble = true" :class="{'display_show':goUserDetailShow === true,'display_none':goUserDetailShow === false}"
+           id="dis_requ_show" class="requirements_shadow"  @click="closeGoUserDetail"
+           style="z-index: 999999;" ref="homePage2">
+        <div onclick="event.cancelBubble = true" class="to_detail_alert">
+          <img src="@/assets/img/home/todetail.png" alt="" class="to_detail_img"  @click="goUserDetail"/>
+<!--          <i class="to_detail_i van-icon van-icon-cross"></i>-->
+        </div>
+      </div>
+
     </div>
 </template>
 
@@ -188,6 +197,7 @@
               showSearchHistory:false,
               historyList:[],
               navShow:false,
+              goUserDetailShow:false
             }
         },
         filters:{
@@ -223,8 +233,17 @@
           changeFixed(clientHeight) {                        //动态修改样式
             console.log(clientHeight);
             this.$refs.homePage.style.height = clientHeight + 'px';
+            this.$refs.homePage2.style.height = clientHeight + 'px';
             console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
 
+          },
+          showGoUserDetail(){
+            if(this.goUserDetailShow === false){
+              this.goUserDetailShow = true
+            }
+          },
+          closeGoUserDetail(){
+            this.goUserDetailShow = false
           },
           goDownCard(){
             this.$router.push({ path: '/downCard' })
@@ -320,6 +339,9 @@
           },
           goUserDetail(){
             this.$router.push({ path: '/userDetail' })
+          },
+          goSetting(){
+            this.$router.push({ path: '/setting' })
           },
           logout(){ //退出登录
             let params={
