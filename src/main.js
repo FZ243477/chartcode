@@ -44,6 +44,7 @@ router.beforeEach((to, from, next) => {
   if (store.get('userinfo') && store.get('userinfo').token) {
     token = store.get('userinfo').token;
   }
+
   if (routerPrivate.indexOf(to.fullPath) != -1) {
     if (token) {
       next()
