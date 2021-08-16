@@ -155,7 +155,7 @@
     import {Search, Swipe, SwipeItem, NavBar, Toast, Dialog} from 'vant';
     import store from "store";
     import { Swiper, SwiperItem,Loading } from "vux";
-    import {index, loadMore, userIndex, newIndex, logOut} from "../../http/api.js";
+    import {index, loadMore, userIndex, newIndex, logOut,wxGetUserInfo,wxLogin} from "../../http/api.js";
     export default {
         components: {
             Swiper,
@@ -361,6 +361,11 @@
           },
             // 获取新首页数据
             getData() {
+
+              wxLogin().then(res => {
+                console.log(res);
+
+              })
               newIndex().then(res => {
                   console.log(res);
                   if (res.code === 1) {
@@ -459,42 +464,44 @@
                 this.userinfo = store.get("userinfo");
             }
           console.log(this.userinfo,888)
-            if (isWeiXin()) {
-                store.set("isWeiXin", true)
-                if (!token) {
-                    if (!urlToken) {
-                        window.location.href = "https://admin.shitutu.com/public/addons/third/index/connect?platform=wechat";
-                        return;
-                    } else {
-                        userIndex({ token: urlToken }).then(res => {
-                            console.log(res)
-                            if (res.code == 1) {
-                                store.remove("userinfo");
-                                store.set("userinfo", res.data.welcome)
-                                this.userinfo = res.data.welcome;
 
-                            } else {
-                                this.$vux.toast.text(res.msg, 'middle')
-                            }
-                        })
-                    }
-                }
-            } else {
-                store.set("isWeiXin", false)
-                if (urlToken) {
-                    userIndex({ token: urlToken }).then(res => {
-                        console.log(res)
-                        if (res.code == 1) {
-                            store.remove("userinfo");
-                            store.set("userinfo", res.data.welcome)
-                            this.userinfo = res.data.welcome;
-                        } else {
-                            this.$vux.toast.text(res.msg, 'middle')
-                        }
-                    })
-                }
-            }
-            this.getData();
+          this.getData();
+            return;
+            // if (isWeiXin()) {
+            //     store.set("isWeiXin", true)
+            //     if (!token) {
+            //         if (!urlToken) {
+            //             window.location.href = "https://admin.shitutu.com/public/addons/third/index/connect?platform=wechat";
+            //             return;
+            //         } else {
+            //             userIndex({ token: urlToken }).then(res => {
+            //                 console.log(res)
+            //                 if (res.code == 1) {
+            //                     store.remove("userinfo");
+            //                     store.set("userinfo", res.data.welcome)
+            //                     this.userinfo = res.data.welcome;
+            //
+            //                 } else {
+            //                     this.$vux.toast.text(res.msg, 'middle')
+            //                 }
+            //             })
+            //         }
+            //     }
+            // } else {
+            //     store.set("isWeiXin", false)
+            //     if (urlToken) {
+            //         userIndex({ token: urlToken }).then(res => {
+            //             console.log(res)
+            //             if (res.code == 1) {
+            //                 store.remove("userinfo");
+            //                 store.set("userinfo", res.data.welcome)
+            //                 this.userinfo = res.data.welcome;
+            //             } else {
+            //                 this.$vux.toast.text(res.msg, 'middle')
+            //             }
+            //         })
+            //     }
+            // }
           if(localStorage.getItem("historyList")){
             this.historyList = JSON.parse(localStorage.getItem("historyList"));
           }

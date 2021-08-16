@@ -243,6 +243,7 @@ export default {
     chioceCard(e,f){
       this.cardNum = e
       this.vipType = f
+      this.payPrice = this.vipRsp.list[e].price
     },
     goDetail(e) {
       //跳转图片详情页面
@@ -268,7 +269,6 @@ export default {
         token: this.userinfo.token
       })
         .then(res => {
-          console.log(res);
           if (res.code === 1) {
             this.userinfo = res.data.welcome;
             this.isLoading = false;
@@ -278,7 +278,6 @@ export default {
           }
         })
         .catch(res => {
-          console.log(res);
         });
     },
     getVipList() {
@@ -288,13 +287,11 @@ export default {
             this.vipRsp = res.data;
             this.payPrice = this.vipRsp.list[0].price
             this.vipType = this.vipRsp.list[0].id
-            console.log(this.vipRsp,111)
           } else {
             this.$vux.toast.text(res.msg, "middle");
           }
         })
         .catch(res => {
-          console.log(res);
         });
     },
     payNow() {
@@ -312,10 +309,8 @@ export default {
       } else {
         params.type = "wechat";
       }
-      console.log(params);
       if (store.get("isWeiXin")) {
         purchaseMember(params).then(res => {
-          console.log(res);
           if (res.status == 200) {
             function onBridgeReady() {
               WeixinJSBridge.invoke(
@@ -329,6 +324,8 @@ export default {
                   paySign: res.data.paySign //微信签名
                 },
                 function(res) {
+                  console.log(res)
+                  return
                   if (
                     res.err_msg ==
                     "get_brand_wcpay_request:ok"

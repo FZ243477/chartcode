@@ -435,16 +435,21 @@ export default {
                     window.location.href = res.data.url;
                 } else {
                     this.$vux.toast.text(res.msg, "middle");
-                  this.$dialog.confirm({
-                    title: "提示",
-                    message: "是否跳转购买下载卡",
-                    confirmButtonText: "确认", //改变确认按钮上显示的文字
-                    cancelButtonText: "取消" //改变取消按钮上显示的文字
-                  }).then(()=> {
-                    this.$router.push({ path: "/downCard" });
-                  }).catch(() => {
-                    console.log("点击了取消按钮噢")
-                  })
+                    if( this.userinfo.is_elme === 1){
+
+                    }else{
+                      this.$dialog.confirm({
+                        title: "提示",
+                        message: "是否跳转购买下载卡",
+                        confirmButtonText: "确认", //改变确认按钮上显示的文字
+                        cancelButtonText: "取消" //改变取消按钮上显示的文字
+                      }).then(()=> {
+                        this.$router.push({ path: "/downCard" });
+                      }).catch(() => {
+                        console.log("点击了取消按钮噢")
+                      })
+                    }
+
                 }
             });
         },
