@@ -45,5 +45,5 @@ export const smsSend = params => post('/api/sms/send',params);   //发送短信
 // 新增接口(5.16)
 export const feedback = params => post('/api/feedback/save',params);   //提需求
 
-export const wxGetUserInfo = params => post('/api/wxOauth/wxGetUserInfo',params);   //获取微信code
+export const wxGetUserInfo = params => post('/api/user/wxGetUserInfo',params);   //获取微信code
 export const wxLogin = params => post('/api/wxOauth/wxLogin',params);   //获取微信code

@@ -1333,4 +1333,38 @@
   left: 2%;
   z-index: 2003;
 }
-
+.coupon_slect {
+  width: 90%;
+  margin-top: .4rem;
+}
+.coupon_i {
+  width: .5rem;
+  height: .5rem;
+  float: left;
+  margin-top: .05rem;
+}
+.coupon-title {
+  margin-left: .133333rem;
+  font-size: .35rem;
+  float: left;
+  color: #666;
+  font-family: 微软雅黑;
+}
+.coupon-right {
+  width: 50%;
+  float: right;
+}
+.coupon-select {
+  width: .4rem;
+  height: .4rem;
+  float: right;
+  margin-top: .1rem;
+}
+.coupon-right span {
+  font-size: .35rem;
+  display: block;
+  float: right;
+  margin-right: .2rem;
+  color: #666;
+  font-family: 微软雅黑;
+}

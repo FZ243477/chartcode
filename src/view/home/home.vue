@@ -197,7 +197,8 @@
               showSearchHistory:false,
               historyList:[],
               navShow:false,
-              goUserDetailShow:false
+              goUserDetailShow:false,
+              code:''
             }
         },
         filters:{
@@ -359,13 +360,10 @@
               }
             })
           },
+
             // 获取新首页数据
             getData() {
 
-              wxLogin().then(res => {
-                console.log(res);
-
-              })
               newIndex().then(res => {
                   console.log(res);
                   if (res.code === 1) {
@@ -452,7 +450,46 @@
                 else {
                     return "";
                 }
+            },
+          getCode () { // 非静默授权，第一次有弹框
+            this.code = ''
+            var local = window.location.href  // 获取页面url
+            var appid = 'wxc98ef19e61e6b789'
+            this.code = this.getUrlCode().code // 截取code
+            if (this.code == null || this.code === '') { // 如果没有code，则去请求
+              window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
+            } else {
+              // 你自己的业务逻辑
+              console.log(this.code,55555)
+              wxGetUserInfo({
+                login_type: 1,
+                code: this.code
+              }).then(res => {
+                if (res.code == 1) {
+                    store.remove("userinfo");
+                    store.set("userinfo", res.data.userinfo)
+                    this.userinfo = res.data.userinfo;
+                    console.log(this.userinfo,444444)
+                } else {
+                    this.$vux.toast.text(res.msg, 'middle')
+                }
+              })
             }
+
+          },
+          getUrlCode() { // 截取url中的code方法
+            var url = location.search
+            this.winUrl = url
+            var theRequest = new Object()
+            if (url.indexOf("?") != -1) {
+              var str = url.substr(1)
+              var strs = str.split("&")
+              for(var i = 0; i < strs.length; i ++) {
+                theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1])
+              }
+            }
+            return theRequest
+          }
         },
         created() {
             // 判断是否是微信浏览器
@@ -464,47 +501,47 @@
                 this.userinfo = store.get("userinfo");
             }
           console.log(this.userinfo,888)
-
-          this.getData();
-            return;
-            // if (isWeiXin()) {
-            //     store.set("isWeiXin", true)
-            //     if (!token) {
-            //         if (!urlToken) {
-            //             window.location.href = "https://admin.shitutu.com/public/addons/third/index/connect?platform=wechat";
-            //             return;
-            //         } else {
-            //             userIndex({ token: urlToken }).then(res => {
-            //                 console.log(res)
-            //                 if (res.code == 1) {
-            //                     store.remove("userinfo");
-            //                     store.set("userinfo", res.data.welcome)
-            //                     this.userinfo = res.data.welcome;
-            //
-            //                 } else {
-            //                     this.$vux.toast.text(res.msg, 'middle')
-            //                 }
-            //             })
-            //         }
-            //     }
-            // } else {
-            //     store.set("isWeiXin", false)
-            //     if (urlToken) {
-            //         userIndex({ token: urlToken }).then(res => {
-            //             console.log(res)
-            //             if (res.code == 1) {
-            //                 store.remove("userinfo");
-            //                 store.set("userinfo", res.data.welcome)
-            //                 this.userinfo = res.data.welcome;
-            //             } else {
-            //                 this.$vux.toast.text(res.msg, 'middle')
-            //             }
-            //         })
-            //     }
-            // }
+            if (isWeiXin()) {
+                store.set("isWeiXin", true)
+              this.getCode()
+              // if (!token) {
+              //
+              //     if (!urlToken) {
+              //         window.location.href = "https://admin.shitutu.com/public/addons/third/index/connect?platform=wechat";
+              //         return;
+              //     } else {
+              //         userIndex({ token: urlToken }).then(res => {
+              //             console.log(res)
+              //             if (res.code == 1) {
+              //                 store.remove("userinfo");
+              //                 store.set("userinfo", res.data.welcome)
+              //                 this.userinfo = res.data.welcome;
+              //             } else {
+              //                 this.$vux.toast.text(res.msg, 'middle')
+              //             }
+              //         })
+              //     }
+              // }
+            } else {
+                store.set("isWeiXin", false)
+                if (urlToken) {
+                    userIndex({ token: urlToken }).then(res => {
+                        console.log(res)
+                        if (res.code == 1) {
+                            store.remove("userinfo");
+                            store.set("userinfo", res.data.welcome)
+                            this.userinfo = res.data.welcome;
+                        } else {
+                            this.$vux.toast.text(res.msg, 'middle')
+                        }
+                    })
+                }
+            }
           if(localStorage.getItem("historyList")){
             this.historyList = JSON.parse(localStorage.getItem("historyList"));
           }
+
+          this.getData();
         }
     };
 </script>

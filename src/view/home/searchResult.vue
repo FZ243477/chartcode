@@ -10,7 +10,7 @@
     <div class="no_search" v-if="total === 0">
       <img src="@/assets/img/home/noSearch.png" class="no_search_img" />
       <p class="no_search_p">找不到图片？联系客服17794558879（微信）或提交您的需求，我们尽快为您研发上传 </p>
-      <div class="no_search_div">
+      <div class="no_search_div" @click="feedBack">
         提交您的需求
       </div>
     </div>
@@ -44,6 +44,45 @@
         </van-list>
     </keep-alive>
    <img v-if="btnFlag" src="@/assets/img/home/backTop.png" alt="" class="gotop " style="" @click="backTop">
+
+
+    <div id="dis_requ_show" style="z-index: 2001" class="requirements_shadow"  :class="{'display_show':feedShow === true,'display_none':feedShow === false}"
+         ref="homePage" @click="closeFeed">
+      <div  onclick="event.cancelBubble = true" class="requirements demand-wrapper-commit">
+        <div class="requirements_title">
+          提交您的需求
+        </div>
+        <div class="van-cell-group van-hairline--top-bottom">
+          <div class="input_text van-cell van-field">
+            <div class="van-cell__value van-cell__value--alone van-field__value">
+              <div class="van-field__body">
+                <input type="text" placeholder="请留下您的姓名......" v-model="name" class="van-field__control" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="van-cell-group van-hairline--top-bottom">
+          <div class="input_text van-cell van-field">
+            <div class="van-cell__value van-cell__value--alone van-field__value">
+              <div class="van-field__body">
+                <input type="text" placeholder="请留下您的电话......" v-model="phone" class="van-field__control" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="van-cell-group van-hairline--top-bottom">
+          <div class="input_textarea van-cell van-field van-field--min-height">
+            <div class="van-cell__value van-cell__value--alone van-field__value">
+              <div class="van-field__body">
+                <textarea placeholder="请输入您的需求......" v-model="content" class="van-field__control"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="down_img" style="margin-top: 0.3rem;" @click="saveFeedBack">提交</a>
+        <a :href="'tel:'+messageContent.phone" class="down_img" style="margin-top: 0.3rem; background: rgb(244, 244, 244); color: rgb(0, 157, 250);" @>联系我们</a>
+      </div>
+    </div>
    </div>
 </template>
 
@@ -52,7 +91,7 @@ import Header from '@/components/Header.vue'
 import { Search, Swipe, SwipeItem, Tag, Grid, GridItem, List, Image} from "vant";
 import store from "store";
 import { Swiper, SwiperItem } from "vux";
-import { index, loadMore, userIndex, newIndex, searchImg} from "../../http/api.js";
+import { index, loadMore, userIndex, newIndex, feedback,searchImg} from "../../http/api.js";
 export default {
   components: {
     Swiper,
@@ -86,11 +125,29 @@ export default {
       loading: false,
       finished: false,
       total:0,
-      btnFlag:false
+      btnFlag:false,
+      feedShow:false,
+      clientHeight: '',
+      phone:'',
+      name:'',
+      content:'',
+      messageContent:'',
     };
   },
 
-  mounted () {
+  watch: {
+    // 如果 `clientHeight` 发生改变，这个函数就会运行
+    clientHeight: function () {
+      this.changeFixed(this.clientHeight)
+    }
+  },
+  mounted () {// 获取浏览器可视区域高度
+    this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
+    //console.log(self.clientHeight);
+    window.onresize = function temp() {
+      this.clientHeight = `${document.documentElement.clientHeight}`;
+    };
+
     window.addEventListener('scroll', this.scrollToTop)
   },
   destroyed () {
@@ -98,6 +155,12 @@ export default {
   },
 
   methods: {
+    changeFixed(clientHeight) {                        //动态修改样式
+      console.log(clientHeight);
+      this.$refs.homePage.style.height = clientHeight + 'px';
+      console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
+
+    },
     backTop () {
       const that = this
       let timer = setInterval(() => {
@@ -144,6 +207,39 @@ export default {
           this.$vux.toast.text(res.msg, "middle");
         }
       });
+      newIndex().then(res => {
+        if (res.code === 1) {
+          this.messageContent = res.data.messageContent
+        } else {
+          this.$vux.toast.text(res.msg, "middle");
+        }
+      })
+    },
+    // 意见反馈
+    feedBack(){
+      if(this.feedShow === false){
+        this.feedShow = true
+      }
+    },
+    saveFeedBack(){
+      let params={
+        user_id:this.userinfo.id,
+        name:this.name,
+        phone:this.phone,
+        content:this.content,
+      }
+      feedback(params).then(res=>{
+        if(res.code==1){
+          this.$vux.toast.text(res.msg, 'middle')
+          this.feedShow = false
+        }else{
+          console.log(res.msg)
+          this.$vux.toast.text(res.msg, 'middle')
+        }
+      })
+    },
+    closeFeed(){
+      this.feedShow = false
     },
     navToActivity(e) {
       this.$router.push({ path: "/activityDetail", query: { id: e.id } });

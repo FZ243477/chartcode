@@ -48,7 +48,21 @@
             </div>
           </div>
 
+          <div class="coupon_slect" v-if="isWeixin && userinfo.coupon === 1">
+            <img  src="@/assets/img/downCard/youhuiquan.png"  alt="" class="coupon_i" />
+            <div class="coupon-title">
+              <span style="color: rgb(255, 0, 0);">优惠券</span>
+            </div>
+            <div class="coupon-right" @click="changeCoupon">
+              <img  src="@/assets/img/downCard/weixuan.png"  class="coupon-select"  :class="{display_none:couponSelect === true }"/>
+              <img  src="@/assets/img/downCard/xuan.png"  class="coupon-select" :class="{display_none:couponSelect === false}"/>
+              <span >使用30元优惠券</span>
+            </div>
+            <div style="clear: both;"></div>
+          </div>
+
 <!--          <pay-mode :syncType.sync="payType"></pay-mode>-->
+
         <div class="order_btn" style="width: 90%;">
           <div class="pay-wrapper" style="text-align: center">
             <div class="pay-wrapper-mode">
@@ -227,7 +241,9 @@ export default {
       isLoading: false,
       cardNum:0,
       payPrice:0,
-      isWeixin: ""
+      isWeixin: "",
+      couponSelect:false,
+      coupon:1
     };
   },
   computed: {
@@ -236,6 +252,23 @@ export default {
     }
   },
   methods: {
+    changeCoupon(){
+      if(this.couponSelect === false){
+        this.couponSelect = true
+        let h = this.cardNum
+        if( this.cardNum === 0){
+        }else{
+          this.payPrice = this.vipRsp.list[h].price - this.userinfo.coupon_price
+        }
+      }else{
+        this.couponSelect = false
+        let h = this.cardNum
+        if( this.cardNum === 0){
+        }else{
+          this.payPrice = this.vipRsp.list[h].price
+        }
+      }
+    },
     goSetting() {
       //跳转设置页面
       this.$router.push({ path: "/setting" });
@@ -243,7 +276,11 @@ export default {
     chioceCard(e,f){
       this.cardNum = e
       this.vipType = f
-      this.payPrice = this.vipRsp.list[e].price
+      if(this.couponSelect === true && this.cardNum != 0){
+        this.payPrice = this.vipRsp.list[e].price - this.userinfo.coupon_price
+      }else{
+        this.payPrice = this.vipRsp.list[e].price
+      }
     },
     goDetail(e) {
       //跳转图片详情页面
@@ -299,10 +336,18 @@ export default {
         this.$vux.toast.text("请选择会员种类", "middle");
         return;
       }
+      if( this.couponSelect === true && this.cardNum > 0){
+       this.coupon = 1
+      }else{
+        this.coupon = 0
+      }
+
       let params = {
         token: store.get("userinfo").token,
         member_id: this.vipType,
-        type: "alipay"
+        type: "alipay",
+        coupon :this.coupon,
+        truePrice:this.payPrice
       };
       if (this.payType == 1) {
         params.type = "alipay";
@@ -311,7 +356,8 @@ export default {
       }
       if (store.get("isWeiXin")) {
         purchaseMember(params).then(res => {
-          if (res.status == 200) {
+          if (res.code === 1) {
+            let openid = this.userinfo.openid;
             function onBridgeReady() {
               WeixinJSBridge.invoke(
                 "getBrandWCPayRequest",
@@ -321,6 +367,7 @@ export default {
                   nonceStr: res.data.nonceStr, //随机串
                   package: res.data.package,
                   signType: res.data.signType, //微信签名方式：
+                  openid: openid, //微信签名方式：
                   paySign: res.data.paySign //微信签名
                 },
                 function(res) {
@@ -364,7 +411,12 @@ export default {
           "&member_id=" +
           this.vipType +
           "&type=" +
-          params.type;
+          params.type+
+          "&truePrice=" +
+          params.truePrice+
+          "&coupon=" +
+          params.coupon
+        ;
       }
     },
     onRefresh() {
@@ -380,8 +432,10 @@ export default {
     if (this.isWeixin) {
       this.payType = 2;
     }
+
     this.$nextTick(() => {
       this.userinfo = store.get("userinfo");
+      console.log(this.userinfo,55555)
       this.getSeeMyBought();
       this.getUserInfo();
       this.getVipList();
