@@ -271,7 +271,6 @@ export default {
   mounted() {
     // 获取浏览器可视区域高度
     this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
-    //console.log(self.clientHeight);
     window.onresize = function temp() {
       this.clientHeight = `${document.documentElement.clientHeight}`;
     };
@@ -288,7 +287,6 @@ export default {
                 params.token = store.get("userinfo").token;
             }
             seeImageDetail(params).then(res => {
-                console.log(res);
                 if (res.code == 1) {
                     this.goodsDetail = res.data;
                 } else {
@@ -299,9 +297,7 @@ export default {
     },
     methods: {
       changeFixed(clientHeight) {                        //动态修改样式
-        console.log(clientHeight);
         this.$refs.homePage.style.height = clientHeight + 'px';
-        console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
       },
       selectReport(e){
         this.reportList[e].bOn = true
@@ -446,7 +442,6 @@ export default {
                       }).then(()=> {
                         this.$router.push({ path: "/downCard" });
                       }).catch(() => {
-                        console.log("点击了取消按钮噢")
                       })
                     }
 
@@ -463,11 +458,9 @@ export default {
         let params = {
             id: this.$route.query.id
         };
-        console.log(store.get("userinfo"))
         if (store.get("userinfo") && store.get("userinfo").token) {
             params.token = store.get("userinfo").token;
             this.userinfo = store.get("userinfo");
-            console.log(this.userinfo)
         }
         seeImageDetail(params).then(res => {
             if (res.code == 1) {

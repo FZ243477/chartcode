@@ -85,6 +85,9 @@
           </div>
           <a href="#" class="down_img" style="margin-top: 0.3rem;" @click="saveFeedBack">提交</a>
           <a :href="'tel:'+messageContent.phone" class="down_img" style="margin-top: 0.3rem; background: rgb(244, 244, 244); color: rgb(0, 157, 250);" @>联系我们</a>
+          <div style="width: 100%;height:auto;text-align: center">
+            <img class="setting_cha" src="@/assets/img/setting/cha.png" @click="closeFeed">
+          </div>
         </div>
       </div>
 
@@ -143,7 +146,6 @@ export default {
   mounted() {
     // 获取浏览器可视区域高度
     this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
-    //console.log(self.clientHeight);
     window.onresize = function temp() {
       this.clientHeight = `${document.documentElement.clientHeight}`;
     };
@@ -156,10 +158,8 @@ export default {
   },
     methods:{
       changeFixed(clientHeight) {                        //动态修改样式
-        console.log(clientHeight);
         this.$refs.homePage.style.height = clientHeight + 'px';
         this.$refs.homePage2.style.height = clientHeight + 'px';
-        console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
 
       },
       goQrCodeShow(){
@@ -189,7 +189,6 @@ export default {
             this.$vux.toast.text(res.msg, 'middle')
             this.feedShow = false
           }else{
-            console.log(res.msg)
             this.$vux.toast.text(res.msg, 'middle')
           }
         })
@@ -293,7 +292,6 @@ export default {
       token = store.get("userinfo").token;
       this.userinfo = store.get("userinfo");
     }
-    console.log(this.userinfo,88855)
     if (isWeiXin()) {
       store.set("isWeiXin", true)
       if (!token) {
@@ -302,7 +300,6 @@ export default {
           return;
         } else {
           userIndex({ token: urlToken }).then(res => {
-            console.log(res)
             if (res.code == 1) {
               store.remove("userinfo");
               store.set("userinfo", res.data.welcome)
@@ -318,7 +315,6 @@ export default {
       store.set("isWeiXin", false)
       if (urlToken) {
         userIndex({ token: urlToken }).then(res => {
-          console.log(res)
           if (res.code == 1) {
             store.remove("userinfo");
             store.set("userinfo", res.data.welcome)

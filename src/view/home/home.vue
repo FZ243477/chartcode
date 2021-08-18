@@ -75,7 +75,7 @@
                 </div>
                 <div class="history_item">
                     <div :title="item" class="_4enLb" v-for="(item,index) in historyList" :key="index">
-                      <span class="_34evo">{{item}}</span>
+                      <span class="_34evo" @click="quickNav(item)">{{item}}</span>
                     </div>
                 </div>
               </div>
@@ -143,6 +143,9 @@
         <div onclick="event.cancelBubble = true" class="to_detail_alert">
           <img src="@/assets/img/home/todetail.png" alt="" class="to_detail_img"  @click="goUserDetail"/>
 <!--          <i class="to_detail_i van-icon van-icon-cross"></i>-->
+          <div style="width: 100%;height:auto;text-align: center">
+            <img class="setting_cha" style="margin-top: 0rem" src="@/assets/img/setting/cha.png" @click="closeGoUserDetail">
+          </div>
         </div>
       </div>
 
@@ -219,7 +222,6 @@
       mounted() {
         // 获取浏览器可视区域高度
         this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
-        //console.log(self.clientHeight);
         window.onresize = function temp() {
           this.clientHeight = `${document.documentElement.clientHeight}`;
         };
@@ -232,10 +234,8 @@
       },
         methods: {
           changeFixed(clientHeight) {                        //动态修改样式
-            console.log(clientHeight);
             this.$refs.homePage.style.height = clientHeight + 'px';
             this.$refs.homePage2.style.height = clientHeight + 'px';
-            console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
 
           },
           showGoUserDetail(){
@@ -313,6 +313,10 @@
             }
             // this.$router.push({ path: '/searchResult', query: { value: this.searchValue }  })
           },
+          // 快捷跳转
+          quickNav(item){
+            this.$router.push({ path: '/searchResult', query: { value: item }  })
+          },
           //删除搜索记录
           deleteHistory(){
             Dialog.confirm({
@@ -365,7 +369,6 @@
             getData() {
 
               newIndex().then(res => {
-                  console.log(res);
                   if (res.code === 1) {
                   this.images = res.data.banner
                     this.classifyList = res.data.classify
@@ -395,7 +398,6 @@
                     type: 1,
                     page: this.vipPage
                 }).then(res => {
-                    console.log(res)
                     this.$vux.loading.hide()
                     if (res.code == 1) {
                         if (res.data.length == 0) {
@@ -418,7 +420,6 @@
                     type: 2,
                     page: this.mustPage
                 }).then(res => {  //加载更多
-                    console.log(res)
                     this.$vux.loading.hide()
                     if (res.code == 1) {
                         if (res.data.length == 0) {
@@ -460,7 +461,6 @@
               window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
             } else {
               // 你自己的业务逻辑
-              console.log(this.code,55555)
               wxGetUserInfo({
                 login_type: 1,
                 code: this.code
@@ -469,7 +469,6 @@
                     store.remove("userinfo");
                     store.set("userinfo", res.data.userinfo)
                     this.userinfo = res.data.userinfo;
-                    console.log(this.userinfo,444444)
                 } else {
                     this.$vux.toast.text(res.msg, 'middle')
                 }
@@ -500,7 +499,6 @@
                 token = store.get("userinfo").token;
                 this.userinfo = store.get("userinfo");
             }
-          console.log(this.userinfo,888)
             if (isWeiXin()) {
                 store.set("isWeiXin", true)
               this.getCode()
@@ -526,7 +524,6 @@
                 store.set("isWeiXin", false)
                 if (urlToken) {
                     userIndex({ token: urlToken }).then(res => {
-                        console.log(res)
                         if (res.code == 1) {
                             store.remove("userinfo");
                             store.set("userinfo", res.data.welcome)

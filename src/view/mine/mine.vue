@@ -243,7 +243,7 @@ export default {
                 token: this.userinfo.token
             })
                 .then(res => {
-                    console.log(res);
+                   // console.log(res);
                     if (res.code === 1) {
                         this.userinfo = res.data.welcome;
                         this.isLoading = false;
@@ -253,7 +253,7 @@ export default {
                     }
                 })
                 .catch(res => {
-                    console.log(res);
+                 //   console.log(res);
                 });
         },
         getVipList() {
@@ -266,7 +266,7 @@ export default {
                     }
                 })
                 .catch(res => {
-                    console.log(res);
+                  //  console.log(res);
                 });
         },
         payNow() {
@@ -284,7 +284,7 @@ export default {
             } else {
                 params.type = "wechat";
             }
-            console.log(params);
+          //  console.log(params);
             if (store.get("isWeiXin")) {
                 purchaseMember(params).then(res => {
                     console.log(res);

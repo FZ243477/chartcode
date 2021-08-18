@@ -104,7 +104,6 @@ export default{
       logOut(params).then(res=>{
         if(res.code==1){
           this.$vux.toast.text('退出登录成功', 'middle')
-          store.remove("userinfo")
           window.setTimeout(()=>{
             this.$router.replace({path:'/login'})
           },500)
@@ -150,7 +149,6 @@ export default{
       token = store.get("userinfo").token;
       this.userinfo = store.get("userinfo");
     }
-    console.log(this.userinfo,88855)
     if (isWeiXin()) {
       store.set("isWeiXin", true)
       if (!token) {
@@ -159,7 +157,6 @@ export default{
           return;
         } else {
           userIndex({ token: urlToken }).then(res => {
-            console.log(res)
             if (res.code == 1) {
               store.remove("userinfo");
               store.set("userinfo", res.data.welcome)

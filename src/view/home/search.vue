@@ -69,7 +69,6 @@
       mounted() {
         // 获取浏览器可视区域高度
         this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
-        //console.log(self.clientHeight);
         window.onresize = function temp() {
           this.clientHeight = `${document.documentElement.clientHeight}`;
         };
@@ -82,9 +81,7 @@
       },
         methods: {
           changeFixed(clientHeight) {                        //动态修改样式
-            console.log(clientHeight);
             this.$refs.homePage.style.height = clientHeight + 'px';
-            console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
 
           },
             // 跳转搜索结果页
@@ -148,7 +145,6 @@
                         return;
                     } else {
                         userIndex({ token: urlToken }).then(res => {
-                            console.log(res)
                             if (res.code == 1) {
                                 store.remove("userinfo");
                                 store.set("userinfo", res.data.welcome)
@@ -163,7 +159,6 @@
                 store.set("isWeiXin", false)
                 if (urlToken) {
                     userIndex({ token: urlToken }).then(res => {
-                        console.log(res)
                         if (res.code == 1) {
                             store.remove("userinfo");
                             store.set("userinfo", res.data.welcome)

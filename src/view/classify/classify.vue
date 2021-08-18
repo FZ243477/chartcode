@@ -9,7 +9,7 @@
 <!--        </div>-->
         <van-tree-select
             height="calc(100% - 10px - 1.17rem)"
-            style="margin-top:10px; height:calc((100% - 20px) - 1.17rem);"
+            style=" height:calc((100% - 20px) - 1.17rem);"
             :items="responseData"
             :main-active-index.sync="activeIndex"
         >
@@ -40,7 +40,7 @@
                                     <div style="position:relative">
                                         <img
                                             v-lazy="item.url"
-                                            style="width:100%; height:150px; object-fit:cover;"
+                                            style="width:100%; height:auto; object-fit:cover;"
                                         />
                                     </div>
                                 </van-grid-item>
@@ -163,7 +163,7 @@ export default {
 
         // 切换父选项
         activeIndex(v, o) {
-            console.log(this.responseData.length - 1, v);
+          //  console.log(this.responseData.length - 1, v);
             if (this.responseData && this.responseData.length - 1 === v) {
                 this.activeIndex = v;
                 return;
@@ -264,7 +264,6 @@ export default {
                 content: this.message
             })
                 .then(res => {
-                    console.log(res);
                     if (res.code === 1) {
                         this.$vux.toast.text("提交成功", "middle");
                         this.message = "";
@@ -273,7 +272,6 @@ export default {
                     }
                 })
                 .catch(res => {
-                    console.log(res);
                 });
         },
         GetUrlParam(paraName) {
@@ -306,9 +304,9 @@ export default {
         id: this.$route.query.id
       };
       this.activeIndex = params.id
-        console.log(this._isMobile());
+      //  console.log(this._isMobile());
         let urlToken = this.GetUrlParam("token");
-        console.log(urlToken)
+      //  console.log(urlToken)
         if (urlToken) {
             if (!this._isMobile()) {
                 window.location.href =
@@ -319,7 +317,7 @@ export default {
                         store.remove("userinfo");
                         store.set("userinfo", res.data.welcome);
                         this.userinfo = res.data.welcome;
-                        console.log(store.get('userinfo'))
+                       // console.log(store.get('userinfo'))
                     } else {
                         this.$vux.toast.text(res.msg, "middle");
                     }
@@ -347,13 +345,15 @@ export default {
 }
 /deep/ .van-grid-item__content {
     padding-top: 0;
-    padding-bottom: 0.133333rem;
 }
 .van-sidebar {
     flex: 0.75;
 }
 .van-tabs {
     height: 100%;
+}
+.van-tree-select__content{
+  padding-top: .9rem;
 }
 .van-tabs--line .van-tabs__wrap {
     position: absolute;

@@ -95,7 +95,6 @@ export default {
       store.set("isWeiXin", false)
       if (urlToken) {
         userIndex({ token: urlToken }).then(res => {
-          console.log(res)
           if (res.code == 1) {
             store.remove("userinfo");
             store.set("userinfo", res.data.welcome)

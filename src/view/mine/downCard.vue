@@ -371,7 +371,7 @@ export default {
                   paySign: res.data.paySign //微信签名
                 },
                 function(res) {
-                  console.log(res)
+                  //console.log(res)
                   return
                   if (
                     res.err_msg ==
@@ -435,7 +435,6 @@ export default {
 
     this.$nextTick(() => {
       this.userinfo = store.get("userinfo");
-      console.log(this.userinfo,55555)
       this.getSeeMyBought();
       this.getUserInfo();
       this.getVipList();
