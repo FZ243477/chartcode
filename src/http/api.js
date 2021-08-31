@@ -47,3 +47,6 @@ export const feedback = params => post('/api/feedback/save',params);   //提需�
 
 export const wxGetUserInfo = params => post('/api/user/wxGetUserInfo',params);   //获取微信code
 export const wxLogin = params => post('/api/wxOauth/wxLogin',params);   //获取微信code
+
+export const addSearchList = params => post('/api/user/addSearchList',params);   //获取微信code
+

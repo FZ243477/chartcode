@@ -63,7 +63,7 @@
                    @keyup.enter="navToSearchResult()"
                    @search="navToSearchResult()"
                    :placeholder="searchPlaceHolder" class="search_text" />
-            <div type="button" class="search_submit">
+            <div type="button" class="search_submit" @click="navToSearchResult()">
               <span style="display: table-cell; vertical-align: middle;">
                 <img src="@/assets/img/home/button_img.png" class="button_img" /></span>
             </div>
@@ -158,7 +158,7 @@
     import {Search, Swipe, SwipeItem, NavBar, Toast, Dialog} from 'vant';
     import store from "store";
     import { Swiper, SwiperItem,Loading } from "vux";
-    import {index, loadMore, userIndex, newIndex, logOut,wxGetUserInfo,wxLogin} from "../../http/api.js";
+    import {index, loadMore, userIndex, newIndex, logOut,wxGetUserInfo,wxLogin,addSearchList} from "../../http/api.js";
     export default {
         components: {
             Swiper,
@@ -311,10 +311,33 @@
               this.historyList.push(this.searchValue);
               localStorage.setItem("historyList",JSON.stringify(this.historyList));
             }
-            // this.$router.push({ path: '/searchResult', query: { value: this.searchValue }  })
+
+            let params={
+              words:this.searchValue,
+              id:this.userinfo.id
+            }
+            addSearchList(params).then(res=>{
+              if(res.code==1){
+
+              }else{
+                this.$vux.toast.text(res.msg, 'middle')
+              }
+            })
+             this.$router.push({ path: '/searchResult', query: { value: this.searchValue }  })
           },
           // 快捷跳转
           quickNav(item){
+            let params={
+              words:item,
+              id:this.userinfo.id
+            }
+            addSearchList(params).then(res=>{
+              if(res.code==1){
+
+              }else{
+                this.$vux.toast.text(res.msg, 'middle')
+              }
+            })
             this.$router.push({ path: '/searchResult', query: { value: item }  })
           },
           //删除搜索记录
@@ -498,6 +521,7 @@
             if (store.get("userinfo") && store.get("userinfo").token) {
                 token = store.get("userinfo").token;
                 this.userinfo = store.get("userinfo");
+
             }
             if (isWeiXin()) {
                 store.set("isWeiXin", true)
@@ -528,6 +552,7 @@
                             store.remove("userinfo");
                             store.set("userinfo", res.data.welcome)
                             this.userinfo = res.data.welcome;
+
                         } else {
                             this.$vux.toast.text(res.msg, 'middle')
                         }

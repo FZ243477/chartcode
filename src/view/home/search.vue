@@ -42,7 +42,7 @@
     import { Search, Swipe, SwipeItem,Tag,Dialog } from 'vant';
     import store from "store";
     import { Swiper, SwiperItem } from "vux";
-    import { index, loadMore, userIndex, newIndex } from "../../http/api.js";
+    import { index, loadMore, userIndex, newIndex,addSearchList } from "../../http/api.js";
     export default {
         components: {
             Swiper,
@@ -93,10 +93,32 @@
                     this.historyList.push(this.searchValue);
                     localStorage.setItem("historyList",JSON.stringify(this.historyList));
                 }
+              let params={
+                words:this.searchValue,
+                id:this.userinfo.id
+              }
+              addSearchList(params).then(res=>{
+                if(res.code==1){
+
+                }else{
+                  this.$vux.toast.text(res.msg, 'middle')
+                }
+              })
                 this.$router.push({ path: '/searchResult', query: { value: this.searchValue }  })
             },
             // 快捷跳转
             quickNav(item){
+              let params={
+                words:item,
+                id:this.userinfo.id
+              }
+              addSearchList(params).then(res=>{
+                if(res.code==1){
+
+                }else{
+                  this.$vux.toast.text(res.msg, 'middle')
+                }
+              })
                 this.$router.push({ path: '/searchResult', query: { value: item }  })
             },
             //删除搜索记录
