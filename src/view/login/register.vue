@@ -31,7 +31,7 @@
       </div>
       <div class="title">注册</div>
       <div class="register-btn">立即注册</div>
-      <img src="@/assets/img/home/logo.2e38c60.png" class="logo_fixed">
+      <img src="@/assets/img/home/logo.2e38c60.png" @click="goHome" class="logo_fixed">
 <!--        <x-header class="title" :left-options="{backText: ''}" title="注册">注册</x-header>-->
 <!--        <div class="input-box">-->
 <!--            <input v-model="mobile" type="text" placeholder="请输入手机号" class="phone-input">-->
@@ -92,6 +92,9 @@ export default {
         this.$refs.homePage2.style.height = clientHeight + 'px';
         console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
 
+      },
+      goHome(){
+        this.$router.push({ path: '/home' })
       },
         register(){ //注册
             let params={

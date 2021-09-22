@@ -84,7 +84,7 @@
 <!--                      />-->
                     </van-grid>
                     <van-empty image="search" v-else>
-                      <div style="color:#fff;" slot="description">暂无数据</div>
+                      <div slot="description">暂无数据</div>
                     </van-empty>
                   </div>
 <!--                    <van-tabs v-model="active" v-if="userinfo.is_elme!=1">-->

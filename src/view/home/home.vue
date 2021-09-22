@@ -1,19 +1,21 @@
 <template>
     <div class="home" style="margin-bottom:10px;" @click="closeIndex()">
       <div class="home_head">
-        <div class="center_mask home_ref" ref="homePage" :class="{'display_show':navShow}" >
-          <div class="center_mask" style="display: block;">
+        <div class="center_mask home_ref" ref="homePage" :class="{'display_show':navShow}" @click="goCloseNav">
+          <div class="center_mask" style="display: block;" onclick="event.cancelBubble = true">
             <div class="nav_cancel">
               <img src="@/assets/img/home/cancel.png" class="cancel_img" @click="goCloseNav"/>
             </div>
             <div class="nav_border"></div>
             <div class="nav_tabs">
               <div v-if="userinfo.is_elme === 0" class="nav_li">ID:{{userinfo.nickname}}</div>
-              <div class="nav_li" @click="goSetting">个人中心</div>
+              <div v-if="noLogin == false" class="nav_li" @click="goSetting">个人中心</div>
               <div v-if="userinfo.is_elme === 0" class="nav_li" @click="goDownCard">下载卡</div>
-              <div class="nav_li" @click="goMine">下载记录 </div>
-              <div class="nav_li" @click="goFavorite">我的收藏</div>
-              <div v-if="userinfo.is_elme === 0" class="nav_li" @click="logout">退出登录</div>
+              <div v-if="noLogin == false" class="nav_li" @click="goMine">下载记录 </div>
+              <div v-if="noLogin == false" class="nav_li" @click="goFavorite">我的收藏</div>
+              <div v-if="userinfo.is_elme === 0 && noLogin == false " class="nav_li" @click="logout">退出登录</div>
+              <div v-if="noLogin" class="nav_li" @click="gologin">登录</div>
+              <div v-if="noLogin" class="nav_li" @click="gore">注册</div>
             </div>
             <div class="nav_footer">
               <a :href="'tel:'+messageContent.phone" class="call_phone" style="width: 4rem;">
@@ -86,6 +88,31 @@
 
       </div>
 
+      <div class="manage_box"  v-if="userinfo.is_elme === 0">
+        目前拥有<span style="color:#009DFB;">344654</span>张图片，昨日新增<span style="color:#009DFB;">1421</span>张
+        </br>
+        <span style="color:#999999;">海量正版餐饮素材，祝您提升使用效率</span>
+      </div>
+
+      <div class="m_box">
+        <div class="m_box_content">
+           <img  src="@/assets/img/home/m1.png" />
+          正版授权
+        </div>
+        <div class="m_box_content">
+          <img  src="@/assets/img/home/m2.png" />
+          海量内容
+        </div>
+        <div class="m_box_content">
+          <img  src="@/assets/img/home/m3.png" />
+          即买即用
+        </div>
+        <div class="m_box_content">
+          <img  src="@/assets/img/home/m4.png" />
+          价格低廉
+        </div>
+      </div>
+
       <div class="hidden_title">
         <p class="hidden_title_p">热门分类</p>
         <div class="title_border"></div>
@@ -149,6 +176,9 @@
         </div>
       </div>
 
+      <div class="backTop"  v-if="btnFlag" @click="backTop">
+        <img src="@/assets/img/home/toTop.png"  />
+      </div>
     </div>
 </template>
 
@@ -201,7 +231,9 @@
               historyList:[],
               navShow:false,
               goUserDetailShow:false,
-              code:''
+              code:'',
+              btnFlag:false,
+              noLogin:false
             }
         },
         filters:{
@@ -225,6 +257,10 @@
         window.onresize = function temp() {
           this.clientHeight = `${document.documentElement.clientHeight}`;
         };
+        window.addEventListener('scroll', this.scrollToTop)
+      },
+      destroyed () {
+        window.removeEventListener('scroll', this.scrollToTop)
       },
       watch: {
         // 如果 `clientHeight` 发生改变，这个函数就会运行
@@ -248,6 +284,12 @@
           },
           goDownCard(){
             this.$router.push({ path: '/downCard' })
+          },
+          gologin(){
+            this.$router.push({ path: '/login' })
+          },
+          gore(){
+            this.$router.push({ path: '/register' })
           },
           chooseSearchTab(e,f){
             this.choiceSearchTab = e
@@ -511,6 +553,27 @@
               }
             }
             return theRequest
+          },
+          backTop () {
+            const that = this
+            let timer = setInterval(() => {
+              let ispeed = Math.floor(-that.scrollTop / 5)
+              document.documentElement.scrollTop = document.body.scrollTop = that.scrollTop + ispeed
+              if (that.scrollTop === 0) {
+                clearInterval(timer)
+              }
+            }, 16)
+          },
+          // 为了计算距离顶部的高度，当高度大于60显示回顶部图标，小于60则隐藏
+          scrollToTop () {
+            const that = this
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+            that.scrollTop = scrollTop
+            if (that.scrollTop > 0) {
+              that.btnFlag = true
+            } else {
+              that.btnFlag = false
+            }
           }
         },
         created() {
@@ -521,7 +584,7 @@
             if (store.get("userinfo") && store.get("userinfo").token) {
                 token = store.get("userinfo").token;
                 this.userinfo = store.get("userinfo");
-
+              console.log(this.userinfo,8885)
             }
             if (isWeiXin()) {
                 store.set("isWeiXin", true)
@@ -564,6 +627,9 @@
           }
 
           this.getData();
+          if (!store.get("userinfo") || !store.get("userinfo").token) {
+           this.noLogin = true
+          }
         }
     };
 </script>

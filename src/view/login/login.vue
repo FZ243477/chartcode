@@ -12,7 +12,7 @@
       </div>
       <div class="title">登录</div>
       <div class="login-btn" @click="login">登录</div>
-      <img src="@/assets/img/home/logo.2e38c60.png" class="logo_fixed">
+      <img src="@/assets/img/home/logo.2e38c60.png" @click="goHome" class="logo_fixed">
 <!--        <div class="title">登录</div>-->
 <!--        <div class="input-box">-->
 <!--            <input v-model="account" type="text" placeholder="请输入手机号" class="phone-input">-->
@@ -67,6 +67,9 @@ export default {
         this.$refs.homePage2.style.height = clientHeight + 'px';
         console.log( this.$refs.homePage.style.height,' this.$refs.homePage.style.height')
 
+      },
+      goHome(){
+          this.$router.push({ path: '/home' })
       },
         login(){
             login({

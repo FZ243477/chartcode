@@ -1,5 +1,6 @@
 <template>
     <div class="search" ref="homePage">
+      <Header></Header>
       <div  class="tab_index_2 ">
         <div  id="1" class="tab_index_l tab_active">
           图片
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+    import Header from '@/components/Header.vue'
     import { Search, Swipe, SwipeItem,Tag,Dialog } from 'vant';
     import store from "store";
     import { Swiper, SwiperItem } from "vux";
@@ -51,7 +53,8 @@
             Swipe,
             SwipeItem,
             Tag,
-            Dialog
+            Dialog,
+          Header
         },
         data() {
             return {

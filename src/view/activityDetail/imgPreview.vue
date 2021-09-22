@@ -1,18 +1,20 @@
 <template>
   <div class="activityDetail">
-    <x-header :left-options="{backText: ''}" style="width:100%; position:fixed; top:0; z-index:999;">图片下载</x-header>
+    <Header></Header>
+<!--    <x-header :left-options="{backText: ''}" style="width:100%; position:fixed; top:0; z-index:999;">图片下载</x-header>-->
 
-    <div class="content">
+    <div class="content" style="width: 95%;margin-left: 2.5%;">
         <img :src="imgUrl" style="width:100%; height:100%;">
         <div>
-            <div style="margin-top:0.5rem; text-align:left; font-size:.32rem;">1.苹果手机或饿了么浏览器无法保存图片，所以您只能通过长按保存的方式。</div>
-            <div style="margin-top:0.5rem; text-align:left; font-size:.32rem;">2.长按此图片进行保存。</div>
+            <div style="margin-top:0.5rem; text-align:left; font-size:.4rem;">1.苹果手机或饿了么浏览器无法保存图片，所以您只能通过长按保存的方式。</div>
+            <div style="margin-top:0.5rem; text-align:left; font-size:.4rem;">2.长按此图片进行保存。</div>
         </div>
     </div>
   </div>
 </template>
 
 <script>
+import Header from '@/components/Header.vue'
 import store from "store";
 import { XHeader, XButton, Swiper, SwiperItem,Alert,XDialog,TransferDomDirective as TransferDom } from "vux";
 import { seeImageDetail,collection,download,download2 } from "../../http/api.js";
@@ -26,19 +28,20 @@ export default {
         Swiper,
         SwiperItem,
         Alert,
-        XDialog
+        XDialog,
+      Header
     },
     data() {
         return {
             imgUrl:""
         };
     },
-    
+
     methods: {
-        
+
     },
     created() {
-        this.imgUrl=unescape(this.$route.query.url);        
+        this.imgUrl=unescape(this.$route.query.url);
     }
 };
 </script>
@@ -48,8 +51,8 @@ export default {
   width: 100vw;
   height: 0.266667rem;
   background-color: #f2f3f4;
-  
-  
+
+
 }
 .activityDetail {
   width: 100vw;

@@ -41,12 +41,12 @@
               <img v-lazy="goodsDetail.image_url" lazy="loaded" style="width: 90%; margin-left: 5%; height: auto !important;" />
             </div>
 
-          <div  class="solid_border" style="margin-bottom: 0.4rem; margin-top: 0.5rem;"></div>
+          <div  class="solid_border" style="margin-bottom: 0.6rem; margin-top: 0.5rem;"></div>
 
           <div class="images_title">{{ goodsDetail.title }}</div>
 
           <div class="down_img" style="font-size: 0.5rem;" @click="downLoad">图片下载</div>
-          <div v-if="userinfo.is_elme === 0" @click="goDownCard" class="purchase_card">购买下载卡</div>
+          <div v-if="userinfo.is_elme != 1  " @click="goDownCard" class="purchase_card">购买下载卡</div>
 
           <p style="color: rgb(153, 153, 153); text-align: center; font-size: 0.35rem; margin-top: 0.3rem;"> 立即下载即可获得高清无水印大图</p>
 
@@ -265,7 +265,8 @@ export default {
             {id:7,title:'其他原因',bOn:false},
           ],
           arr:[],
-          message:''
+          message:'',
+          noLogin:false
         };
     },
   mounted() {
@@ -417,6 +418,13 @@ export default {
         this.$router.push({ path: "/downCard" });
       },
         downLoad() {
+          if (!store.get("userinfo") || !store.get("userinfo").token) {
+            this.$vux.toast.text("您还未登陆,请先登陆", "middle");
+            window.setTimeout(() => {
+              this.$router.push({ path: "/login" });
+            }, 500);
+            return;
+          }
             //下载图片
             download2({
                 image_id: this.$route.query.id,
@@ -428,7 +436,11 @@ export default {
                         query: { url: escape(res.data.url) }
                     });
                 } else if (res.code == 1002) {
-                    window.location.href = res.data.url;
+                  this.$router.push({
+                    path: "/imgPreview",
+                    query: { url: escape(res.data.url) }
+                  });
+                  //  window.location.href = res.data.url;
                 } else {
                     this.$vux.toast.text(res.msg, "middle");
                     if( this.userinfo.is_elme === 1){
@@ -474,6 +486,9 @@ export default {
         if (store.get("mobileType") == 0 && store.get("alertStatus")) {
             this.show = true;
         }
+      if (!store.get("userinfo") || !store.get("userinfo").token) {
+        this.noLogin = true
+      }
     }
 };
 </script>

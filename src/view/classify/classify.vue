@@ -8,8 +8,8 @@
 <!--            </div>-->
 <!--        </div>-->
         <van-tree-select
-            height="calc(100% - 10px - 1.17rem)"
-            style=" height:calc((100% - 20px) - 1.17rem);"
+            height="calc(100% - 10px)"
+            style=" height:calc((100% - 20px) );"
             :items="responseData"
             :main-active-index.sync="activeIndex"
         >
@@ -165,24 +165,25 @@ export default {
         activeIndex(v, o) {
           //  console.log(this.responseData.length - 1, v);
             if (this.responseData && this.responseData.length - 1 === v) {
+              console.log(1)
                 this.activeIndex = v;
                 return;
             }
-            // if (this.responseData[v].childlist.length > 0) {
-            //     this.params.page = 1;
-            //     this.params.tags_id = this.responseData[v].childlist[0].id;
-            //     this.childSel = 0;
-            //     this.classifyData = [];
-            //     this.getImgList();
-            // } else {
-            //     this.params.page = 1;
-            //     this.params.tags_id = this.responseData[v].id;
-            //     this.childSel = 0;
-            //     this.classifyData = [];
-            //     this.getImgList();
-            //     // Toast('该分类暂无内容，请浏览其他分类');
-            //     // this.activeIndex = o;
-            // }
+            if (this.responseData[v].childlist.length > 0) {
+                this.params.page = 1;
+                this.params.tags_id = this.responseData[v].childlist[0].id;
+                this.childSel = 0;
+                this.classifyData = [];
+                this.getImgList();
+            } else {
+                this.params.page = 1;
+                this.params.tags_id = this.responseData[v].id;
+                this.childSel = 0;
+                this.classifyData = [];
+                this.getImgList();
+                // Toast('该分类暂无内容，请浏览其他分类');
+                // this.activeIndex = o;
+            }
         }
     },
     methods: {
@@ -214,11 +215,11 @@ export default {
                         res.data.splice(9, 10);
                         this.responseData = res.data.reverse();
                        // this.responseData.unshift(hotItem);
-                        if (this.responseData[0].childlist.length > 0) {
-                            this.params.tags_id = this.responseData[0].childlist[0].id;
+                        if (this.responseData[this.activeIndex].childlist.length > 0) {
+                            this.params.tags_id = this.responseData[this.activeIndex].childlist[0].id;
                             this.getImgList();
                         } else {
-                            this.params.tags_id = this.responseData[0].id;
+                            this.params.tags_id = this.responseData[this.activeIndex].id;
                             this.getImgList();
                         }
                         // this.responseData.push({
@@ -299,11 +300,12 @@ export default {
         }
     },
     created() {
-      this.getData();
+   this.getData();
       let params = {
         id: this.$route.query.id
       };
       this.activeIndex = params.id
+
       //  console.log(this._isMobile());
         let urlToken = this.GetUrlParam("token");
       //  console.log(urlToken)
@@ -368,7 +370,7 @@ export default {
 }
 .classify {
     width: 100%;
-    height: calc(100% - 45px);
+    height: calc(100% - 10px);
     box-sizing: border-box;
     overflow: hidden;
     position: absolute;

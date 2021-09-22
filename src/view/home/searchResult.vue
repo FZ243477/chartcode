@@ -1,7 +1,7 @@
 <template>
   <div class="searchResult">
     <Header></Header>
-    <div style="width: 100%; background-color: rgb(255, 255, 255); position: fixed;">
+    <div style="width: 100%; background-color: rgb(255, 255, 255); position: fixed;z-index: 2001">
     <div class="search_desc">
       <span class="search_desc_text">搜索关键词：<span class="color_blue">{{params.keyword}}</span></span>
       <span class="search_desc_text" style="margin-left: 15px;">共<span class="color_blue">{{total}}</span>张图片</span>
@@ -26,10 +26,9 @@
         <van-grid :column-num="2" style="
     column-count: 2;
     column-gap: 0.13rem;
-    width: 90%;
-    margin-left: 5%;
+    width: 100%;
     margin-top: 0.7rem;
-    z-index: 99999;
+    z-index: 2000;
     background-color: rgb(255, 255, 255);
 ">
             <van-grid-item v-for="(item,index) in responseData" :key="index" @click="navToActivity(item)" style="flex-basis: 25%;
@@ -43,7 +42,7 @@
         </van-grid>
         </van-list>
     </keep-alive>
-   <img v-if="btnFlag" src="@/assets/img/home/backTop.png" alt="" class="gotop " style="" @click="backTop">
+<!--   <img v-if="btnFlag" src="@/assets/img/home/backTop.png" alt="" class="gotop " style="" @click="backTop">-->
 
 
     <div id="dis_requ_show" style="z-index: 2001" class="requirements_shadow"  :class="{'display_show':feedShow === true,'display_none':feedShow === false}"
@@ -136,10 +135,25 @@ export default {
   },
 
   watch: {
+
+    '$route' (to, from) {
+      let query = this.$route.query;
+      this.params.keyword = query.value;
+      this.responseData = []
+      this.params.page = 0
+      if( this.params.keyword === undefined){
+        console.log(this.params.keyword)
+      }else{
+        console.log(this.params.keyword)
+        this.getData()
+      }
+
+    },
     // 如果 `clientHeight` 发生改变，这个函数就会运行
     clientHeight: function () {
       this.changeFixed(this.clientHeight)
-    }
+    },
+
   },
   mounted () {// 获取浏览器可视区域高度
     this.clientHeight = `${document.documentElement.clientHeight}`          //document.body.clientWidth;
