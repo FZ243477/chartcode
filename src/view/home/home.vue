@@ -88,28 +88,28 @@
 
       </div>
 
-      <div class="manage_box"  v-if="userinfo.is_elme === 0">
+      <div class="manage_box"  v-if="userinfo.is_elme === 0 || Object.keys(userinfo).length==0" >
         目前拥有<span style="color:#009DFB;">344654</span>张图片，昨日新增<span style="color:#009DFB;">1421</span>张
         </br>
         <span style="color:#999999;">海量正版餐饮素材，祝您提升使用效率</span>
       </div>
 
-      <div class="m_box">
-        <div class="m_box_content">
-           <img  src="@/assets/img/home/m1.png" />
-          正版授权
+      <div class="m_box" v-if="userinfo.is_elme === 0 || Object.keys(userinfo).length==0">
+        <div class="m_box_content" align="center">
+           <img  src="@/assets/img/home/f1.png" />
+         <p style="margin-top: 0.2rem;">正版授权</p>
         </div>
-        <div class="m_box_content">
-          <img  src="@/assets/img/home/m2.png" />
-          海量内容
+        <div class="m_box_content" @click="goCreateLogo()" align="center">
+          <img  src="@/assets/img/home/f2.png" />
+          <p style="margin-top: 0.2rem;">LOGO制作</p>
         </div>
-        <div class="m_box_content">
-          <img  src="@/assets/img/home/m3.png" />
-          即买即用
+        <div class="m_box_content" align="center">
+          <img  src="@/assets/img/home/f3.png" />
+          <p style="margin-top: 0.2rem;">即买即用</p>
         </div>
-        <div class="m_box_content">
-          <img  src="@/assets/img/home/m4.png" />
-          价格低廉
+        <div class="m_box_content" align="center">
+          <img  src="@/assets/img/home/f4.png" />
+          <p style="margin-top: 0.2rem;">价格低廉</p>
         </div>
       </div>
 
@@ -131,7 +131,7 @@
         <img class="bl_img2" :src="messageContent.logo" lazy="loaded" style="height: auto;" />
       </div>
 
-      <div v-if="userinfo.is_elme === 0">
+      <div v-if="userinfo.is_elme === 0 || Object.keys(userinfo).length==0">
       <div class="hidden_title">
         <p class="hidden_title_p">合作品牌</p>
         <div class="title_border"></div>
@@ -281,6 +281,9 @@
           },
           closeGoUserDetail(){
             this.goUserDetailShow = false
+          },
+          goCreateLogo(){
+            window.location.href = 'https://phone.10tutu.cn/home';
           },
           goDownCard(){
             this.$router.push({ path: '/downCard' })
@@ -584,7 +587,7 @@
             if (store.get("userinfo") && store.get("userinfo").token) {
                 token = store.get("userinfo").token;
                 this.userinfo = store.get("userinfo");
-              console.log(this.userinfo,8885)
+              //console.log(this.userinfo,8885)
             }
             if (isWeiXin()) {
                 store.set("isWeiXin", true)

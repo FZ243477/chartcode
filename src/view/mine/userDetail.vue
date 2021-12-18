@@ -427,7 +427,7 @@ export default {
     goMembership() {
       //跳转会员购买
       if (!store.get("userinfo") || !store.get("userinfo").token) {
-        this.$vux.toast.text("您还未登陆,请先登陆", "middle");
+        this.$vux.toast.text("您还未登陆,请先登            陆", "middle");
         window.setTimeout(() => {
           this.$router.push({ path: "/login" });
         }, 500);
